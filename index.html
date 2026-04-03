@@ -4,481 +4,219 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Margareth Almeida — Neuropsicopedagoga</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@300;400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --void:#050510;
-  --deep:#0a0a1a;
-  --cyan:#00f0ff;
-  --magenta:#ff00aa;
-  --violet:#7b2fff;
-  --gold:#f0c040;
-  --white:#f0f0ff;
-  --glass:rgba(255,255,255,0.04);
-  --glass2:rgba(255,255,255,0.08);
+  --cream:#F5F0E8;
+  --deep:#0D1B2A;
+  --gold:#B8733A;
+  --gold2:#E8A060;
+  --warm:#EDE5D8;
+  --muted:#8A7F74;
+  --white:#FFFDF9;
+  --border:rgba(255,255,255,0.12);
+  --border-h:rgba(184,115,58,0.45);
 }
 html{scroll-behavior:smooth}
-::-webkit-scrollbar{width:4px}
-::-webkit-scrollbar-track{background:var(--void)}
-::-webkit-scrollbar-thumb{background:var(--violet);border-radius:4px}
-
 body{
-  background:var(--void);
-  font-family:'Space Grotesk',sans-serif;
+  background:var(--deep);
+  font-family:'Syne',sans-serif;
   min-height:100vh;
   overflow-x:hidden;
-  color:var(--white);
-  perspective:1200px;
   cursor:none;
+  color:var(--white);
 }
 
-/* === 3D SCENE === */
-.scene{position:fixed;inset:0;z-index:0;perspective:1000px;overflow:hidden}
+/* === GRAIN === */
+.grain{
+  position:fixed;inset:0;z-index:100;pointer-events:none;opacity:0.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
 
-/* === ANTI-GRAVITY PARTICLES === */
+/* === ANIMATED BG === */
+.bg-canvas{position:fixed;inset:0;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);animation:drift 18s ease-in-out infinite;opacity:0.18}
+.blob1{width:600px;height:600px;background:#B8733A;top:-200px;left:-200px;animation-delay:0s}
+.blob2{width:500px;height:500px;background:#1a4a6e;bottom:-150px;right:-150px;animation-delay:-7s}
+.blob3{width:350px;height:350px;background:#8B4513;top:40%;left:40%;animation-delay:-13s}
+@keyframes drift{
+  0%,100%{transform:translate(0,0) scale(1)}
+  33%{transform:translate(40px,-30px) scale(1.05)}
+  66%{transform:translate(-30px,40px) scale(0.95)}
+}
+
+/* === GRID === */
+.grid-lines{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size:60px 60px;
+}
+
+/* === PARTICLES === */
 .particles{position:fixed;inset:0;z-index:1;pointer-events:none}
 .particle{
   position:absolute;border-radius:50%;opacity:0;
   animation:floatUp linear infinite;
 }
 @keyframes floatUp{
-  0%{transform:translateY(100vh) translateX(0) scale(0);opacity:0}
-  10%{opacity:1}
-  90%{opacity:1}
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:0.6}
+  90%{opacity:0.6}
   100%{transform:translateY(-10vh) translateX(var(--drift)) scale(1);opacity:0}
 }
 
-/* === MESH GRADIENT ORBS === */
-.orb{
-  position:fixed;border-radius:50%;filter:blur(100px);
-  mix-blend-mode:screen;pointer-events:none;
-  animation:orbFloat 20s ease-in-out infinite;
-}
-.orb1{width:500px;height:500px;background:var(--violet);top:-15%;left:-10%;animation-delay:0s;opacity:0.15}
-.orb2{width:400px;height:400px;background:var(--cyan);bottom:-10%;right:-10%;animation-delay:-7s;opacity:0.12}
-.orb3{width:350px;height:350px;background:var(--magenta);top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:-14s;opacity:0.1}
-@keyframes orbFloat{
-  0%,100%{transform:translate(0,0) scale(1)}
-  25%{transform:translate(60px,-40px) scale(1.1)}
-  50%{transform:translate(-30px,-80px) scale(0.95)}
-  75%{transform:translate(40px,30px) scale(1.05)}
-}
-
-/* === NOISE + SCANLINES === */
-.noise{
-  position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.03;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-.scanlines{
-  position:fixed;inset:0;z-index:2;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
-}
-
-/* === HOLOGRAPHIC GRID === */
-.holo-grid{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
-  background-image:
-    linear-gradient(rgba(0,240,255,0.02) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,240,255,0.02) 1px,transparent 1px);
-  background-size:80px 80px;
-}
-
-/* === MAIN CONTENT === */
-.content{
+/* === MAIN === */
+.wrap{
   position:relative;z-index:10;
-  max-width:520px;margin:0 auto;
-  padding:0 20px 100px;
-  transform-style:preserve-3d;
+  max-width:560px;margin:0 auto;
+  padding:0 24px 100px;
 }
 
 /* === HERO === */
-.hero{padding-top:60px;text-align:center;transform-style:preserve-3d}
-
-/* === FLOATING PROFILE === */
-.avatar-container{
-  position:relative;display:inline-block;margin-bottom:28px;
-  animation:antiGrav 6s ease-in-out infinite;
-  transform-style:preserve-3d;
-}
-@keyframes antiGrav{
-  0%,100%{transform:translateY(0) rotateX(0deg) rotateY(0deg)}
-  25%{transform:translateY(-12px) rotateX(3deg) rotateY(-3deg)}
-  50%{transform:translateY(-6px) rotateX(-2deg) rotateY(2deg)}
-  75%{transform:translateY(-16px) rotateX(2deg) rotateY(-1deg)}
+.hero{
+  padding-top:64px;
+  text-align:center;
+  margin-bottom:36px;
 }
 
-.avatar-ring{
-  width:120px;height:120px;border-radius:50%;padding:3px;
-  background:conic-gradient(from 0deg, var(--cyan), var(--violet), var(--magenta), var(--cyan));
-  animation:ringRotate 8s linear infinite;
-  box-shadow:0 0 40px rgba(123,47,255,0.3),0 0 80px rgba(0,240,255,0.15),inset 0 0 40px rgba(0,0,0,0.5);
+/* === STATIC PROFILE === */
+.photo-frame{
+  position:relative;
+  display:inline-block;
+  margin-bottom:28px;
+}
+.photo-ring{
+  width:120px;height:120px;
+  border-radius:50%;
+  padding:3px;
+  background:conic-gradient(from 0deg, #B8733A, #E8A060, #1a4a6e, #B8733A);
+  display:inline-flex;
+  align-items:center;justify-content:center;
+  animation:ringRotate 12s linear infinite;
+  box-shadow:0 0 30px rgba(184,115,58,0.35),0 0 60px rgba(184,115,58,0.12);
 }
 @keyframes ringRotate{to{transform:rotate(360deg)}}
-
-.avatar-inner{
-  width:100%;height:100%;border-radius:50%;overflow:hidden;
-  background:var(--void);
-  animation:ringRotate 8s linear infinite reverse;
+.photo-inner{
+  width:100%;height:100%;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--deep);
+  animation:ringRotate 12s linear infinite reverse;
 }
-.avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
-
-.holo-badge{
-  position:absolute;bottom:-2px;right:-6px;
-  background:linear-gradient(135deg, var(--violet), var(--magenta));
-  color:#fff;font-family:'JetBrains Mono',monospace;
-  font-size:8px;font-weight:500;letter-spacing:2px;
-  padding:5px 12px;border-radius:20px;text-transform:uppercase;
-  box-shadow:0 0 20px rgba(123,47,255,0.6);
-  animation:badgePulse 2.5s ease-in-out infinite;
-}
-@keyframes badgePulse{
-  0%,100%{box-shadow:0 0 20px rgba(123,47,255,0.6)}
-  50%{box-shadow:0 0 35px rgba(255,0,170,0.8)}
+.photo-inner img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
 }
 
-.hover-ring{
-  position:absolute;inset:-8px;
-  border:1px solid rgba(0,240,255,0.1);border-radius:50%;
-  animation:expandRing 3s ease-in-out infinite;
+.live-badge{
+  position:absolute;bottom:4px;right:-4px;
+  background:var(--gold);color:#fff;
+  font-size:9px;font-weight:600;letter-spacing:2px;
+  padding:4px 10px;border-radius:20px;
+  text-transform:uppercase;
+  box-shadow:0 0 20px rgba(184,115,58,0.6);
+  animation:pulseBadge 2s ease-in-out infinite;
 }
-.hover-ring:nth-child(2){animation-delay:1s;inset:-16px;border-color:rgba(123,47,255,0.08)}
-.hover-ring:nth-child(3){animation-delay:2s;inset:-24px;border-color:rgba(255,0,170,0.06)}
-@keyframes expandRing{
-  0%,100%{opacity:0.3;transform:scale(1)}
-  50%{opacity:0.8;transform:scale(1.05)}
+@keyframes pulseBadge{
+  0%,100%{box-shadow:0 0 20px rgba(184,115,58,0.6)}
+  50%{box-shadow:0 0 32px rgba(184,115,58,0.9)}
 }
 
 /* === TYPOGRAPHY === */
-.eyebrow{
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px;font-weight:500;letter-spacing:5px;text-transform:uppercase;
-  background:linear-gradient(90deg, var(--cyan), var(--violet));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  margin-bottom:12px;opacity:0;animation:revealUp 0.8s 0.2s ease forwards;
+.hero-eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:4px;
+  color:var(--gold);text-transform:uppercase;
+  margin-bottom:10px;
+  opacity:0;animation:up 0.8s 0.2s ease forwards;
+}
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,8vw,52px);
+  font-weight:900;
+  color:var(--white);
+  line-height:1.0;letter-spacing:-1px;
+  margin-bottom:4px;
+  opacity:0;animation:up 0.8s 0.3s ease forwards;
+}
+.hero-name em{
+  font-style:italic;
+  background:linear-gradient(90deg,#B8733A,#E8A060);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-role{
+  font-size:13px;font-weight:300;letter-spacing:3px;
+  color:rgba(255,255,255,0.55);
+  text-transform:uppercase;margin-bottom:20px;
+  opacity:0;animation:up 0.8s 0.4s ease forwards;
+}
+.hero-tagline{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:18px;
+  color:rgba(245,240,232,0.8);
+  line-height:1.55;
+  max-width:340px;margin:0 auto 24px;
+  opacity:0;animation:up 0.8s 0.5s ease forwards;
+}
+.rule{
+  width:1px;height:48px;
+  background:linear-gradient(180deg,transparent,var(--gold),transparent);
+  margin:0 auto 24px;
+  opacity:0;animation:up 0.8s 0.55s ease forwards;
 }
 
-.name{
-  font-family:'Outfit',sans-serif;
-  font-size:clamp(38px,9vw,56px);font-weight:800;
-  line-height:1.05;letter-spacing:-2px;margin-bottom:6px;
-  opacity:0;animation:revealUp 0.8s 0.3s ease forwards;
-}
-.name .first{color:var(--white)}
-.name .last{
-  background:linear-gradient(135deg, var(--cyan), var(--violet), var(--magenta));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  background-size:200% 200%;animation:gradientFlow 4s ease infinite;
-}
-@keyframes gradientFlow{
-  0%,100%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-}
-
-.role{
-  font-family:'JetBrains Mono',monospace;
-  font-size:11px;font-weight:300;letter-spacing:3px;
-  color:rgba(240,240,255,0.35);text-transform:uppercase;
-  margin-bottom:20px;opacity:0;animation:revealUp 0.8s 0.4s ease forwards;
-}
-
-.tagline{
-  font-size:16px;font-weight:300;color:rgba(240,240,255,0.55);
-  line-height:1.6;max-width:360px;margin:0 auto 32px;
-  opacity:0;animation:revealUp 0.8s 0.5s ease forwards;
-}
-
-.divider{
-  width:60px;height:2px;
-  background:linear-gradient(90deg, var(--cyan), var(--violet));
-  margin:0 auto 32px;border-radius:2px;
-  opacity:0;animation:revealUp 0.8s 0.55s ease forwards;
-  box-shadow:0 0 12px rgba(0,240,255,0.3);
-}
-
-/* === SOCIAL PILLS === */
+/* === SOCIALS === */
 .socials{
-  display:flex;justify-content:center;gap:8px;
-  opacity:0;animation:revealUp 0.8s 0.6s ease forwards;margin-bottom:12px;
+  display:flex;justify-content:center;gap:10px;
+  opacity:0;animation:up 0.8s 0.6s ease forwards;
+  flex-wrap:wrap;
 }
-.soc-pill{
-  display:flex;align-items:center;gap:6px;
-  border:1px solid rgba(255,255,255,0.08);border-radius:40px;
-  padding:8px 16px;font-family:'JetBrains Mono',monospace;
-  font-size:10px;font-weight:500;letter-spacing:1px;
-  color:rgba(240,240,255,0.5);text-decoration:none;text-transform:uppercase;
-  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  background:rgba(255,255,255,0.02);backdrop-filter:blur(10px);
-  position:relative;overflow:hidden;
+.soc{
+  border:1px solid var(--border);
+  border-radius:40px;padding:8px 18px;
+  font-size:11px;font-weight:600;letter-spacing:1.5px;
+  color:rgba(255,255,255,0.7);text-transform:uppercase;
+  text-decoration:none;
+  transition:all 0.25s;cursor:none;
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(8px);
 }
-.soc-pill::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(123,47,255,0.15),rgba(0,240,255,0.1));
-  opacity:0;transition:opacity 0.3s;
-}
-.soc-pill:hover{
-  border-color:var(--violet);color:var(--white);
-  transform:translateY(-3px) scale(1.05);
-  box-shadow:0 10px 30px rgba(123,47,255,0.2);
-}
-.soc-pill:hover::before{opacity:1}
-.soc-pill svg{width:14px;height:14px;position:relative;z-index:1}
-.soc-pill span{position:relative;z-index:1}
-
-/* === SECTION HEADER === */
-.sect{
-  display:flex;align-items:center;gap:12px;margin:40px 0 16px;
-  opacity:0;animation:revealUp 0.7s ease forwards;
-}
-.sect-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)}
-.sect-tag{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;font-weight:500;letter-spacing:4px;
-  color:rgba(240,240,255,0.2);text-transform:uppercase;white-space:nowrap;
-}
-
-/* === LINK CARDS === */
-.link-stack{display:flex;flex-direction:column;gap:10px;transform-style:preserve-3d}
-
-.card{
-  display:flex;align-items:center;gap:14px;
-  padding:16px 18px;border-radius:16px;
-  text-decoration:none;position:relative;overflow:hidden;
-  transition:all 0.5s cubic-bezier(0.34,1.56,0.64,1);
-  opacity:0;animation:cardIn 0.7s ease forwards;
-  transform-style:preserve-3d;
-  border:1px solid rgba(255,255,255,0.05);
-  background:rgba(255,255,255,0.02);backdrop-filter:blur(20px);
-  cursor:pointer;
-}
-.card::after{
-  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,0.06),transparent 60%);
-  opacity:0;transition:opacity 0.3s;pointer-events:none;
-}
-.card:hover::after{opacity:1}
-.card:hover{
-  transform:translateY(-4px) scale(1.02) rotateX(2deg);
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(123,47,255,0.15),0 0 40px rgba(123,47,255,0.08);
-  border-color:rgba(123,47,255,0.2);
-}
-
-.card.primary{
-  background:linear-gradient(135deg,rgba(123,47,255,0.12),rgba(0,240,255,0.06));
-  border-color:rgba(123,47,255,0.2);
-}
-.card.primary:hover{
-  border-color:rgba(0,240,255,0.4);
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(0,240,255,0.3),0 0 60px rgba(0,240,255,0.12);
-}
-.card.shop{
-  background:linear-gradient(135deg,rgba(255,0,170,0.1),rgba(123,47,255,0.08));
-  border-color:rgba(255,0,170,0.15);
-}
-.card.shop:hover{
-  border-color:rgba(255,0,170,0.4);
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(255,0,170,0.3),0 0 60px rgba(255,0,170,0.12);
-}
-.card.book{
-  background:linear-gradient(135deg,rgba(240,192,64,0.1),rgba(255,0,170,0.06));
-  border-color:rgba(240,192,64,0.15);
-}
-.card.book:hover{
-  border-color:rgba(240,192,64,0.4);
-  box-shadow:0 20px 60px rgba(0,0,0,0.5),0 0 0 1px rgba(240,192,64,0.3),0 0 60px rgba(240,192,64,0.12);
-}
-
-.card-icon{
-  width:46px;height:46px;border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;flex-shrink:0;
-  transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.06);
-  position:relative;overflow:hidden;
-}
-.card:hover .card-icon{
-  transform:scale(1.15) rotate(-5deg);
-  box-shadow:0 0 20px rgba(123,47,255,0.3);
-}
-.card-icon .icon-glow{
-  position:absolute;inset:0;
-  background:radial-gradient(circle,rgba(123,47,255,0.2),transparent);
-  opacity:0;transition:opacity 0.3s;
-}
-.card:hover .icon-glow{opacity:1}
-
-.card-body{flex:1;min-width:0;position:relative;z-index:1}
-.card-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:13.5px;font-weight:600;color:rgba(240,240,255,0.9);
-  line-height:1.35;margin-bottom:2px;transition:color 0.3s;
-}
-.card:hover .card-title{color:#fff}
-.card-sub{
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px;font-weight:300;color:rgba(240,240,255,0.3);
-  letter-spacing:0.3px;transition:color 0.3s;
-}
-.card:hover .card-sub{color:rgba(240,240,255,0.5)}
-
-.card-arrow{
-  width:34px;height:34px;border-radius:50%;
-  border:1px solid rgba(255,255,255,0.1);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  position:relative;overflow:hidden;
-}
-.card-arrow svg{
-  width:14px;height:14px;stroke:rgba(240,240,255,0.3);
-  transition:all 0.3s;position:relative;z-index:1;
-}
-.card:hover .card-arrow{
-  background:linear-gradient(135deg, var(--violet), var(--cyan));
-  border-color:transparent;transform:translateX(3px) scale(1.1);
-}
-.card:hover .card-arrow svg{stroke:#fff}
-
-.card-type{
-  position:absolute;top:10px;right:14px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:8px;font-weight:500;letter-spacing:1.5px;
-  text-transform:uppercase;color:rgba(240,240,255,0.15);transition:color 0.3s;
-}
-.card:hover .card-type{color:rgba(240,240,255,0.35)}
-
-/* === ANIMATION DELAYS === */
-.card:nth-child(1){animation-delay:0.5s}
-.card:nth-child(2){animation-delay:0.56s}
-.card:nth-child(3){animation-delay:0.62s}
-.card:nth-child(4){animation-delay:0.68s}
-.card:nth-child(5){animation-delay:0.74s}
-.card:nth-child(6){animation-delay:0.80s}
-.card:nth-child(7){animation-delay:0.86s}
-.card:nth-child(8){animation-delay:0.92s}
-.card:nth-child(9){animation-delay:0.98s}
-.card:nth-child(10){animation-delay:1.04s}
-
-/* === MARQUEE TAPE === */
-.tape{
-  overflow:hidden;border-top:1px solid rgba(255,255,255,0.04);
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  padding:14px 0;margin:48px -20px 0;
-  opacity:0;animation:revealUp 0.7s 1.05s ease forwards;
-}
-.tape-inner{
-  display:flex;gap:32px;white-space:nowrap;
-  animation:tapeScroll 25s linear infinite;
-}
-.tape-inner span{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;font-weight:500;letter-spacing:4px;
-  color:rgba(240,240,255,0.1);text-transform:uppercase;
-}
-.tape-inner span.glow{color:rgba(123,47,255,0.35)}
-@keyframes tapeScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* === SKILLS === */
-.skills{
-  display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;
-  opacity:0;animation:revealUp 0.7s 1.1s ease forwards;
-}
-.skill{
-  font-family:'JetBrains Mono',monospace;
-  font-size:10px;font-weight:400;letter-spacing:0.5px;
-  color:rgba(240,240,255,0.3);
-  border:1px solid rgba(255,255,255,0.06);border-radius:40px;
-  padding:6px 14px;background:rgba(255,255,255,0.02);
-  transition:all 0.3s;cursor:default;
-}
-.skill:hover{
-  border-color:var(--violet);color:var(--white);
-  background:rgba(123,47,255,0.08);
+.soc:hover{
+  border-color:var(--gold);color:var(--gold);
+  background:rgba(184,115,58,0.1);
   transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(123,47,255,0.15);
+  box-shadow:0 8px 24px rgba(184,115,58,0.2);
 }
+.soc svg{width:14px;height:14px;vertical-align:-2px;margin-right:4px}
 
-/* === FOOTER === */
-.footer{
-  margin-top:52px;text-align:center;
-  opacity:0;animation:revealUp 0.7s 1.15s ease forwards;
+/* === SECTION DIVIDER === */
+.sect-head{
+  display:flex;align-items:center;gap:14px;
+  margin:36px 0 16px;
+  opacity:0;animation:up 0.7s ease forwards;
 }
-.footer-name{
-  font-family:'Outfit',sans-serif;font-weight:200;font-size:18px;
-  background:linear-gradient(135deg,rgba(240,240,255,0.2),rgba(240,240,255,0.08));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:2px;
-}
-.footer-sub{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;color:rgba(240,240,255,0.08);
-  letter-spacing:3px;margin-top:4px;
-}
-
-/* === FLOATING ELEMENTS === */
-.float-el{
-  position:fixed;pointer-events:none;z-index:3;
-  animation:floatAround 15s ease-in-out infinite;
-}
-.float-el.diamond{
-  width:12px;height:12px;border:1px solid rgba(0,240,255,0.15);
-  transform:rotate(45deg);top:20%;right:15%;
-}
-.float-el.circle{
-  width:8px;height:8px;border-radius:50%;
-  background:rgba(123,47,255,0.2);top:60%;left:10%;
-}
-.float-el.line{
-  width:40px;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,0,170,0.2),transparent);
-  top:35%;left:8%;
-}
-.float-el.cross{
-  top:75%;right:12%;font-size:14px;
-  color:rgba(0,240,255,0.12);font-family:'JetBrains Mono',monospace;
-}
-@keyframes floatAround{
-  0%,100%{transform:translate(0,0)}
-  25%{transform:translate(15px,-20px)}
-  50%{transform:translate(-10px,-35px)}
-  75%{transform:translate(20px,-15px)}
-}
-
-/* === CURSOR === */
-.cursor-custom{position:fixed;pointer-events:none;z-index:9999}
-.cursor-dot{
-  width:6px;height:6px;background:var(--cyan);border-radius:50%;
-  transform:translate(-50%,-50%);
-  box-shadow:0 0 12px var(--cyan);transition:transform 0.15s;
-}
-.cursor-trail{
-  position:fixed;width:32px;height:32px;
-  border:1px solid rgba(0,240,255,0.2);border-radius:50%;
-  transform:translate(-50%,-50%);pointer-events:none;z-index:9998;
-  transition:all 0.2s ease;
-}
-
-/* === ANIMATIONS === */
-@keyframes revealUp{
-  from{opacity:0;transform:translateY(25px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(30px) translateZ(-20px) rotateX(5deg)}
-  to{opacity:1;transform:translateY(0) translateZ(0) rotateX(0)}
+.sect-line{flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.sect-label{
+  font-size:9px;font-weight:600;letter-spacing:4px;
+  color:rgba(255,255,255,0.35);text-transform:uppercase;
+  white-space:nowrap;
 }
 
 /* === CAROUSEL === */
-.carousel-section{
-  margin:40px 0 0;
-  opacity:0;animation:revealUp 0.7s 1.0s ease forwards;
-}
 .carousel-wrap{
   position:relative;
-  border-radius:20px;
+  border-radius:18px;
   overflow:hidden;
-  border:1px solid rgba(255,255,255,0.06);
-  background:linear-gradient(135deg,rgba(123,47,255,0.08),rgba(0,240,255,0.04));
-  backdrop-filter:blur(20px);
+  border:1px solid var(--border-h);
+  background:linear-gradient(135deg,rgba(184,115,58,0.12),rgba(232,160,96,0.06));
+  backdrop-filter:blur(16px);
+  margin-bottom:8px;
+  opacity:0;animation:up 0.7s 0.65s ease forwards;
+  box-shadow:0 4px 30px rgba(184,115,58,0.1);
 }
 .carousel-track{
   display:flex;
@@ -486,55 +224,230 @@ body{
 }
 .carousel-slide{
   min-width:100%;
-  padding:32px 24px;
+  padding:28px 24px 24px;
   text-align:center;
 }
+.carousel-emoji{
+  font-size:28px;
+  margin-bottom:12px;
+}
 .carousel-msg{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:15px;font-weight:300;
-  color:rgba(240,240,255,0.7);
+  font-family:'Playfair Display',serif;
+  font-size:15px;font-weight:400;
+  color:rgba(255,253,249,0.85);
   line-height:1.65;
   font-style:italic;
-  margin-bottom:16px;
+  margin-bottom:14px;
 }
-.carousel-msg .highlight{
-  background:linear-gradient(90deg, var(--cyan), var(--violet));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  font-weight:500;font-style:normal;
+.carousel-msg .hl{
+  color:var(--gold2);
+  font-weight:700;
+  font-style:normal;
 }
 .carousel-author{
-  font-family:'JetBrains Mono',monospace;
-  font-size:9px;font-weight:400;
+  font-size:11px;font-weight:600;
   letter-spacing:2px;
-  color:rgba(240,240,255,0.25);
+  color:var(--gold);
   text-transform:uppercase;
+}
+.carousel-cta{
+  display:inline-block;
+  margin-top:16px;
+  padding:8px 22px;
+  border-radius:40px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  color:#fff;
+  font-size:11px;font-weight:600;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:all 0.3s;
+  box-shadow:0 4px 16px rgba(184,115,58,0.35);
+}
+.carousel-cta:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 8px 28px rgba(184,115,58,0.5);
 }
 .carousel-nav{
   display:flex;justify-content:center;align-items:center;
-  gap:12px;padding:14px;
-  border-top:1px solid rgba(255,255,255,0.04);
+  gap:12px;padding:12px 0 14px;
+  border-top:1px solid rgba(184,115,58,0.15);
 }
 .carousel-dot{
   width:6px;height:6px;border-radius:50%;
-  background:rgba(255,255,255,0.15);
+  background:rgba(255,255,255,0.2);
   transition:all 0.3s;cursor:pointer;
 }
 .carousel-dot.active{
-  background:var(--cyan);
-  box-shadow:0 0 10px var(--cyan);
-  width:20px;border-radius:4px;
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+  width:22px;border-radius:4px;
 }
 .carousel-btn{
   width:28px;height:28px;border-radius:50%;
-  border:1px solid rgba(255,255,255,0.1);
-  background:rgba(255,255,255,0.03);
-  color:rgba(240,240,255,0.4);
+  border:1px solid var(--border);
+  background:rgba(255,255,255,0.04);
+  color:rgba(255,255,255,0.5);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all 0.3s;font-size:12px;
+  cursor:pointer;transition:all 0.3s;font-size:14px;
 }
 .carousel-btn:hover{
-  border-color:var(--violet);color:var(--white);
-  background:rgba(123,47,255,0.1);
+  border-color:var(--gold);color:var(--gold);
+  background:rgba(184,115,58,0.1);
+}
+
+/* === LINKS === */
+.links{display:flex;flex-direction:column;gap:10px}
+
+.lnk{
+  display:flex;align-items:center;gap:16px;
+  padding:18px 20px;border-radius:16px;
+  text-decoration:none;cursor:none;
+  position:relative;overflow:hidden;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  opacity:0;animation:up 0.6s ease forwards;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(12px);
+}
+.lnk::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,115,58,0.08),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.lnk:hover{
+  transform:translateY(-3px) scale(1.01);
+  box-shadow:0 16px 40px rgba(0,0,0,0.4),0 0 0 1px var(--border-h);
+  border-color:var(--border-h);
+}
+.lnk:hover::before{opacity:1}
+
+.lnk.primary{
+  background:linear-gradient(135deg,rgba(184,115,58,0.15),rgba(232,160,96,0.08));
+  border-color:rgba(184,115,58,0.3);
+}
+.lnk.featured{
+  background:linear-gradient(135deg,rgba(26,74,110,0.25),rgba(13,27,42,0.5));
+  border-color:rgba(26,74,110,0.35);
+}
+.lnk.whatsapp{
+  background:linear-gradient(135deg,rgba(37,211,102,0.12),rgba(37,211,102,0.04));
+  border-color:rgba(37,211,102,0.3);
+}
+.lnk.whatsapp:hover{
+  border-color:rgba(37,211,102,0.5);
+  box-shadow:0 16px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(37,211,102,0.4),0 0 30px rgba(37,211,102,0.1);
+}
+
+.lnk-icon{
+  width:46px;height:46px;border-radius:14px;
+  background:rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;flex-shrink:0;
+  transition:transform 0.3s;
+  border:1px solid rgba(255,255,255,0.06);
+}
+.lnk:hover .lnk-icon{transform:scale(1.1) rotate(-4deg)}
+
+.lnk-body{flex:1;min-width:0}
+.lnk-title{
+  font-size:14px;font-weight:600;
+  color:rgba(255,255,255,0.95);
+  line-height:1.3;margin-bottom:2px;
+}
+.lnk-sub{
+  font-size:11.5px;font-weight:300;
+  color:rgba(255,255,255,0.5);
+}
+
+.lnk-arr{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.4);font-size:14px;
+  flex-shrink:0;
+  transition:all 0.3s;
+}
+.lnk:hover .lnk-arr{
+  background:var(--gold);border-color:var(--gold);
+  color:#fff;transform:translateX(2px);
+}
+
+.lnk-badge{
+  position:absolute;top:10px;right:16px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:8px;font-weight:500;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.25);
+  transition:color 0.3s;
+}
+.lnk:hover .lnk-badge{color:rgba(255,255,255,0.5)}
+
+/* === DELAYS === */
+.lnk:nth-child(1){animation-delay:0.6s}
+.lnk:nth-child(2){animation-delay:0.66s}
+.lnk:nth-child(3){animation-delay:0.72s}
+.lnk:nth-child(4){animation-delay:0.78s}
+.lnk:nth-child(5){animation-delay:0.84s}
+.lnk:nth-child(6){animation-delay:0.90s}
+.lnk:nth-child(7){animation-delay:0.96s}
+.lnk:nth-child(8){animation-delay:1.02s}
+.lnk:nth-child(9){animation-delay:1.08s}
+.lnk:nth-child(10){animation-delay:1.14s}
+
+/* === MARQUEE === */
+.marquee-wrap{
+  overflow:hidden;border-top:1px solid rgba(255,255,255,0.06);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:12px 0;margin:44px -24px 0;
+  opacity:0;animation:up 0.7s 1.1s ease forwards;
+}
+.marquee-inner{
+  display:flex;gap:40px;white-space:nowrap;
+  animation:marquee 22s linear infinite;
+}
+.marquee-inner span{
+  font-size:10px;font-weight:600;letter-spacing:4px;
+  color:rgba(255,255,255,0.15);text-transform:uppercase;
+}
+.marquee-inner span.accent{color:rgba(184,115,58,0.5)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* === SKILLS === */
+.pills{
+  display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;
+  opacity:0;animation:up 0.7s 1.15s ease forwards;
+}
+.pill{
+  border:1px solid var(--border);
+  border-radius:40px;padding:7px 14px;
+  font-size:11px;font-weight:400;
+  color:rgba(255,255,255,0.5);
+  background:rgba(255,255,255,0.03);
+  letter-spacing:0.5px;
+  transition:all 0.3s;
+  cursor:default;
+}
+.pill:hover{
+  border-color:var(--gold);
+  color:var(--gold2);
+  background:rgba(184,115,58,0.08);
+  transform:translateY(-2px);
+}
+
+/* === FOOTER === */
+.footer{
+  margin-top:48px;text-align:center;
+  opacity:0;animation:up 0.7s 1.2s ease forwards;
+}
+.footer-sig{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:15px;
+  color:rgba(255,255,255,0.2);letter-spacing:1px;
+}
+.footer-crp{
+  font-size:10px;color:rgba(255,255,255,0.12);margin-top:4px;letter-spacing:2px;
 }
 
 /* === WHATSAPP FLOAT === */
@@ -543,307 +456,314 @@ body{
   width:56px;height:56px;border-radius:50%;
   background:#25D366;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(37,211,102,0.4),0 0 40px rgba(37,211,102,0.15);
+  box-shadow:0 4px 20px rgba(37,211,102,0.4),0 0 40px rgba(37,211,102,0.12);
   transition:all 0.4s cubic-bezier(0.34,1.56,0.64,1);
   animation:waFloat 3s ease-in-out infinite;
-  text-decoration:none;
+  text-decoration:none;cursor:none;
 }
 .wa-float:hover{
   transform:scale(1.15) translateY(-3px);
-  box-shadow:0 8px 30px rgba(37,211,102,0.6),0 0 60px rgba(37,211,102,0.25);
+  box-shadow:0 8px 30px rgba(37,211,102,0.6),0 0 60px rgba(37,211,102,0.2);
+  animation:none;
 }
-.wa-float svg{width:28px;height:28px;fill:#fff;position:relative;z-index:1}
+.wa-float svg{width:28px;height:28px;fill:#fff}
 @keyframes waFloat{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-6px)}
 }
-.wa-float:hover{animation:none}
+
+/* === CURSOR === */
+.cursor{position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:difference}
+.cursor-dot{width:8px;height:8px;background:#fff;border-radius:50%;transform:translate(-50%,-50%);transition:transform 0.1s}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(255,255,255,0.4);border-radius:50%;transform:translate(-50%,-50%);transition:all 0.12s ease;pointer-events:none;z-index:9998}
+
+/* === ANIMATIONS === */
+@keyframes up{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 /* === RESPONSIVE === */
 @media(max-width:600px){
-  .content{padding:0 16px 80px}
-  .avatar-ring{width:100px;height:100px}
-  .card{padding:14px 16px;gap:12px}
-  .card-icon{width:40px;height:40px;font-size:18px}
+  .wrap{padding:0 16px 80px}
+  .photo-ring{width:100px;height:100px}
+  .lnk{padding:16px 18px;gap:12px}
+  .lnk-icon{width:42px;height:42px;font-size:20px}
   .name{letter-spacing:-1px}
-  .float-el{display:none}
+  .wa-float{bottom:16px;right:16px;width:50px;height:50px}
+  .wa-float svg{width:24px;height:24px}
 }
 @media(hover:none){
   body{cursor:auto}
-  .cursor-custom,.cursor-trail{display:none !important}
-  .card,.soc-pill,.skill{cursor:pointer}
+  .cursor,.cursor-ring{display:none !important}
+  .lnk,.soc,.pill,.carousel-btn,.carousel-dot,.wa-float{cursor:pointer}
 }
 </style>
 </head>
 <body>
 
-<!-- BACKGROUND -->
-<div class="scene">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
+<div class="grain"></div>
+<div class="bg-canvas">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
 </div>
-<div class="holo-grid"></div>
-<div class="noise"></div>
-<div class="scanlines"></div>
+<div class="grid-lines"></div>
 <div class="particles" id="particles"></div>
-
-<!-- FLOATING ELEMENTS -->
-<div class="float-el diamond"></div>
-<div class="float-el circle"></div>
-<div class="float-el line"></div>
-<div class="float-el cross">+</div>
-
-<!-- CURSOR -->
-<div class="cursor-custom"><div class="cursor-dot" id="cursorDot"></div></div>
-<div class="cursor-trail" id="cursorTrail"></div>
+<div class="cursor"><div class="cursor-dot"></div></div>
+<div class="cursor-ring" id="ring"></div>
 
 <!-- WHATSAPP FLOAT -->
 <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" class="wa-float" target="_blank">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- CONTENT -->
-<div class="content">
+<div class="wrap">
 
+  <!-- HERO -->
   <div class="hero">
-    <div class="avatar-container">
-      <div class="hover-ring"></div>
-      <div class="hover-ring"></div>
-      <div class="hover-ring"></div>
-      <div class="avatar-ring">
-        <div class="avatar-inner">
+    <div class="photo-frame">
+      <div class="photo-ring">
+        <div class="photo-inner">
           <img src="image/perfil.jpg" alt="Margareth Almeida">
         </div>
       </div>
-      <div class="holo-badge">neuro</div>
+      <div class="live-badge">neuro</div>
     </div>
 
-    <div class="eyebrow">Neuropsicopedagoga</div>
-    <div class="name"><span class="first">Margareth</span><br><span class="last">Almeida</span></div>
-    <div class="role">Autismo · TDAH · Neurodiversidade</div>
-    <div class="tagline">"Transformando desafios em conquistas — com ciência e afeto."</div>
-    <div class="divider"></div>
+    <div class="hero-eyebrow">Neuropsicopedagoga</div>
+    <div class="hero-name">Margareth<br><em>Almeida</em></div>
+    <div class="hero-role">Autismo · TDAH · Neurodiversidade</div>
+    <div class="hero-tagline">"Transformando desafios em conquistas — com ciência e afeto."</div>
+    <div class="rule"></div>
 
     <div class="socials">
-      <a href="https://www.tiktok.com/@neuromargarethapoio?lang=en" class="soc-pill" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-        <span>TikTok</span>
+      <a href="https://www.tiktok.com/@neuromargarethapoio?lang=en" class="soc" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-1px;margin-right:3px"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>TikTok
       </a>
-      <a href="https://www.threads.com/@neuromargarethapoio" class="soc-pill" target="_blank">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3C6.5 3 2 6.5 2 11c0 2.5 1.5 4.5 4 5.8l-1 3 3.5-1.8c1.1.3 2.3.5 3.5.5 5.5 0 10-3.5 10-8s-4.5-7-10-7z"/><circle cx="8" cy="11" r="1"/><circle cx="12" cy="11" r="1"/><circle cx="16" cy="11" r="1"/></svg>
-        <span>Threads</span>
+      <a href="https://www.threads.com/@neuromargarethapoio" class="soc" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-1px;margin-right:3px"><path d="M12 3C6.5 3 2 6.5 2 11c0 2.5 1.5 4.5 4 5.8l-1 3 3.5-1.8c1.1.3 2.3.5 3.5.5 5.5 0 10-3.5 10-8s-4.5-7-10-7z"/><circle cx="8" cy="11" r="1"/><circle cx="12" cy="11" r="1"/><circle cx="16" cy="11" r="1"/></svg>Threads
       </a>
+    </div>
+  </div>
+
+  <!-- CAROUSEL NO TOPO -->
+  <div class="carousel-wrap" id="carousel">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-slide">
+        <div class="carousel-emoji">💜</div>
+        <div class="carousel-msg">Seu filho com autismo <span class="hl">não precisa ser curado</span> — precisa ser compreendido, amado e ter o suporte certo. E eu estou aqui para isso.</div>
+        <div class="carousel-author">— Margareth Almeida</div>
+        <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" class="carousel-cta" target="_blank">Fale Comigo</a>
+      </div>
+      <div class="carousel-slide">
+        <div class="carousel-emoji">🧩</div>
+        <div class="carousel-msg">Cada criança é única, e o TDAH <span class="hl">não é um limite</span> — é uma forma diferente de ver o mundo. Vamos juntos descobrir o potencial do seu filho.</div>
+        <div class="carousel-author">— Margareth Almeida</div>
+        <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Preciso%20de%20ajuda%20com%20TDAH%20%F0%9F%92%9B&type=phone_number&app_absent=0" class="carousel-cta" target="_blank">Quero Saber Mais</a>
+      </div>
+      <div class="carousel-slide">
+        <div class="carousel-emoji">🤝</div>
+        <div class="carousel-msg">Mãe, pai, cuidador... <span class="hl">vocês não estão sozinhos</span>. Existe orientação especializada que faz toda a diferença no desenvolvimento do seu filho.</div>
+        <div class="carousel-author">— Margareth Almeida</div>
+        <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Preciso%20de%20orienta%C3%A7%C3%A3o%20%F0%9F%99%8F&type=phone_number&app_absent=0" class="carousel-cta" target="_blank">Conversar Agora</a>
+      </div>
+      <div class="carousel-slide">
+        <div class="carousel-emoji">⭐</div>
+        <div class="carousel-msg">A avaliação neurodesenvolvimental certa pode <span class="hl">mudar toda a trajetória</span> do seu filho. Quanto antes identificar, mais cedo intervir.</div>
+        <div class="carousel-author">— Margareth Almeida</div>
+        <a href="https://teste-triagem-neurodesenvolvimental.vercel.app/" class="carousel-cta" target="_blank">Fazer Teste de Triagem</a>
+      </div>
+      <div class="carousel-slide">
+        <div class="carousel-emoji">📚</div>
+        <div class="carousel-msg">Eu criei ebooks, materiais e atividades pensados especialmente para <span class="hl">facilitar o seu dia a dia</span>. Porque conhecimento é a melhor ferramenta.</div>
+        <div class="carousel-author">— Margareth Almeida</div>
+        <a href="https://template-link.vercel.app/" class="carousel-cta" target="_blank">Ver Materiais Grátis</a>
+      </div>
+    </div>
+    <div class="carousel-nav">
+      <div class="carousel-btn" id="prevBtn">‹</div>
+      <div style="display:flex;gap:6px" id="carouselDots">
+        <div class="carousel-dot active"></div>
+        <div class="carousel-dot"></div>
+        <div class="carousel-dot"></div>
+        <div class="carousel-dot"></div>
+        <div class="carousel-dot"></div>
+      </div>
+      <div class="carousel-btn" id="nextBtn">›</div>
     </div>
   </div>
 
   <!-- DESTAQUES -->
-  <div class="sect">
+  <div class="sect-head">
     <div class="sect-line"></div>
-    <div class="sect-tag">// Destaques</div>
+    <div class="sect-label">Destaques</div>
     <div class="sect-line"></div>
   </div>
 
-  <div class="link-stack">
-    <a href="https://materia-neuropsicopedagoga-margaret.vercel.app/" class="card primary" target="_blank">
-      <span class="card-type">site</span>
-      <div class="card-icon">📘<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Material Neuropsicopedagoga</div>
-        <div class="card-sub">Conteúdo completo para famílias</div>
+  <div class="links">
+    <a href="https://materia-neuropsicopedagoga-margaret.vercel.app/" class="lnk primary" target="_blank">
+      <span class="lnk-badge">site</span>
+      <div class="lnk-icon">📘</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Material Neuropsicopedagoga</div>
+        <div class="lnk-sub">Conteúdo completo para famílias</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://brinqueteando.online/" class="card shop" target="_blank">
-      <span class="card-type">loja</span>
-      <div class="card-icon">🧸<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Loja brinqueTEAndo</div>
-        <div class="card-sub">Brinquedos educativos e sensoriais</div>
+    <a href="https://brinqueteando.online/" class="lnk featured" target="_blank">
+      <span class="lnk-badge">loja</span>
+      <div class="lnk-icon">🧸</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Loja brinqueTEAndo</div>
+        <div class="lnk-sub">Brinquedos educativos e sensoriais</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://margarethebook.vercel.app/" class="card book" target="_blank">
-      <span class="card-type">livro</span>
-      <div class="card-icon">💛<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Não Era Falta de Amor</div>
-        <div class="card-sub">Para pais que se cobram demais</div>
+    <a href="https://margarethebook.vercel.app/" class="lnk primary" target="_blank">
+      <span class="lnk-badge">livro</span>
+      <div class="lnk-icon">💛</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Não Era Falta de Amor</div>
+        <div class="lnk-sub">Para pais que se cobram demais</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
   </div>
 
   <!-- RECURSOS & EBOOKS -->
-  <div class="sect">
+  <div class="sect-head">
     <div class="sect-line"></div>
-    <div class="sect-tag">// Recursos & ebooks</div>
+    <div class="sect-label">Recursos & ebooks</div>
     <div class="sect-line"></div>
   </div>
 
-  <div class="link-stack">
-    <a href="https://teste-triagem-neurodesenvolvimental.vercel.app/" class="card" target="_blank">
-      <span class="card-type">teste</span>
-      <div class="card-icon">🧠<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Teste de Triagem Neurodesenvolvimental</div>
-        <div class="card-sub">Avaliação do desenvolvimento neurocognitivo</div>
+  <div class="links">
+    <a href="https://teste-triagem-neurodesenvolvimental.vercel.app/" class="lnk featured" target="_blank">
+      <span class="lnk-badge">teste</span>
+      <div class="lnk-icon">🧠</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Teste de Triagem Neurodesenvolvimental</div>
+        <div class="lnk-sub">Avaliação do desenvolvimento neurocognitivo</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://pay.kiwify.com.br/SZHV1bD" class="card primary" target="_blank">
-      <span class="card-type">ebook</span>
-      <div class="card-icon">🎯<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">5 Estratégias Secretas — Comunicação com Autismo</div>
-        <div class="card-sub">Ebook exclusivo com método comprovado</div>
+    <a href="https://pay.kiwify.com.br/SZHV1bD" class="lnk primary" target="_blank">
+      <span class="lnk-badge">ebook</span>
+      <div class="lnk-icon">🎯</div>
+      <div class="lnk-body">
+        <div class="lnk-title">5 Estratégias Secretas — Comunicação com Autismo</div>
+        <div class="lnk-sub">Ebook exclusivo com método comprovado</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://template-link.vercel.app/" class="card" target="_blank">
-      <span class="card-type">free</span>
-      <div class="card-icon">🎁<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Baixe Materiais Grátis</div>
-        <div class="card-sub">Material pedagógico selecionado</div>
+    <a href="https://template-link.vercel.app/" class="lnk" target="_blank">
+      <span class="lnk-badge">free</span>
+      <div class="lnk-icon">🎁</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Baixe Materiais Grátis</div>
+        <div class="lnk-sub">Material pedagógico selecionado</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://mundo-do-leo.base44.app/" class="card book" target="_blank">
-      <span class="card-type">ebook</span>
-      <div class="card-icon">📖<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">O Mundo Colorido do Leo</div>
-        <div class="card-sub">Livro infantil sobre neurodiversidade</div>
+    <a href="https://mundo-do-leo.base44.app/" class="lnk primary" target="_blank">
+      <span class="lnk-badge">ebook</span>
+      <div class="lnk-icon">📖</div>
+      <div class="lnk-body">
+        <div class="lnk-title">O Mundo Colorido do Leo</div>
+        <div class="lnk-sub">Livro infantil sobre neurodiversidade</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
 
-    <a href="https://tdah-autismo.vercel.app/" class="card shop" target="_blank">
-      <span class="card-type">ebook</span>
-      <div class="card-icon">💜<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Pequenos Gigantes — TDAH & Autismo</div>
-        <div class="card-sub">Ebook sobre superação e neurodiversidade</div>
+    <a href="https://tdah-autismo.vercel.app/" class="lnk" target="_blank">
+      <span class="lnk-badge">ebook</span>
+      <div class="lnk-icon">💜</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Pequenos Gigantes — TDAH & Autismo</div>
+        <div class="lnk-sub">Ebook sobre superação e neurodiversidade</div>
       </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-    </a>
-
-    <a href="https://www.brterapeutas.com.br/minhapagina/praia-grande/neuropsicopedagogia/5299" class="card" target="_blank">
-      <span class="card-type">perfil</span>
-      <div class="card-icon">⭐<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">BR Terapeutas</div>
-        <div class="card-sub">Avaliações e agendamentos</div>
-      </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
-    </a>
-
-    <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" class="card primary" target="_blank">
-      <span class="card-type">contato</span>
-      <div class="card-icon">💬<div class="icon-glow"></div></div>
-      <div class="card-body">
-        <div class="card-title">Fale comigo no WhatsApp</div>
-        <div class="card-sub">Atendimento personalizado para você</div>
-      </div>
-      <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg></div>
+      <div class="lnk-arr">→</div>
     </a>
   </div>
 
-  <!-- CAROUSEL DE MENSAGENS -->
-  <div class="carousel-section">
-    <div class="sect">
-      <div class="sect-line"></div>
-      <div class="sect-tag">// Para você, mãe</div>
-      <div class="sect-line"></div>
-    </div>
-    <div class="carousel-wrap" id="carousel">
-      <div class="carousel-track" id="carouselTrack">
-        <div class="carousel-slide">
-          <div class="carousel-msg">"Você <span class="highlight">não está sozinha</span> nessa jornada. Cada passo importa, e cada dia é uma nova oportunidade de celebrar a vida do seu filho."</div>
-          <div class="carousel-author">— com carinho, Margareth ✨</div>
-        </div>
-        <div class="carousel-slide">
-          <div class="carousel-msg">"Crianças com autismo <span class="highlight">não precisam ser curadas</span> — precisam ser compreendidas, amadas e respeitadas exatamente como são."</div>
-          <div class="carousel-author">— com carinho, Margareth 💜</div>
-        </div>
-        <div class="carousel-slide">
-          <div class="carousel-msg">"Seu amor <span class="highlight">já é o maior therapeutic</span> que seu filho pode ter. Mas conhecimento e orientação fazem esse amor virar superpoder."</div>
-          <div class="carousel-author">— com carinho, Margareth 🧠</div>
-        </div>
-        <div class="carousel-slide">
-          <div class="carousel-msg">"Cada conquista, por menor que seja, é uma <span class="highlight">vitória enorme</span>. E você, mãe, é a maior heroína dessa história."</div>
-          <div class="carousel-author">— com carinho, Margareth ⭐</div>
-        </div>
-        <div class="carousel-slide">
-          <div class="carousel-msg">"<span class="highlight">Você pode contar comigo</span>. Juntas vamos transformar desafios em conquistas — com ciência,策略 e muito afeto."</div>
-          <div class="carousel-author">— com carinho, Margareth 🤝</div>
-        </div>
+  <!-- CONTATO -->
+  <div class="sect-head">
+    <div class="sect-line"></div>
+    <div class="sect-label">Contato</div>
+    <div class="sect-line"></div>
+  </div>
+
+  <div class="links">
+    <a href="https://www.brterapeutas.com.br/minhapagina/praia-grande/neuropsicopedagogia/5299" class="lnk" target="_blank">
+      <span class="lnk-badge">perfil</span>
+      <div class="lnk-icon">⭐</div>
+      <div class="lnk-body">
+        <div class="lnk-title">BR Terapeutas</div>
+        <div class="lnk-sub">Avaliações e agendamentos</div>
       </div>
-      <div class="carousel-nav">
-        <div class="carousel-btn" id="prevBtn">‹</div>
-        <div class="carousel-dots" id="carouselDots">
-          <div class="carousel-dot active"></div>
-          <div class="carousel-dot"></div>
-          <div class="carousel-dot"></div>
-          <div class="carousel-dot"></div>
-          <div class="carousel-dot"></div>
-        </div>
-        <div class="carousel-btn" id="nextBtn">›</div>
+      <div class="lnk-arr">→</div>
+    </a>
+
+    <a href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" class="lnk whatsapp" target="_blank">
+      <span class="lnk-badge">contato</span>
+      <div class="lnk-icon">💬</div>
+      <div class="lnk-body">
+        <div class="lnk-title">Fale comigo no WhatsApp</div>
+        <div class="lnk-sub">Atendimento personalizado para você</div>
       </div>
-    </div>
+      <div class="lnk-arr">→</div>
+    </a>
   </div>
 
   <!-- MARQUEE -->
-  <div class="tape">
-    <div class="tape-inner">
-      <span>Autismo</span><span class="glow">◆</span>
-      <span>TDAH</span><span class="glow">◆</span>
-      <span>Neurodiversidade</span><span class="glow">◆</span>
-      <span>Desenvolvimento Infantil</span><span class="glow">◆</span>
-      <span>Neuropsicopedagogia</span><span class="glow">◆</span>
-      <span>TEA</span><span class="glow">◆</span>
-      <span>Orientação Familiar</span><span class="glow">◆</span>
-      <span>ABA</span><span class="glow">◆</span>
-      <span>Autismo</span><span class="glow">◆</span>
-      <span>TDAH</span><span class="glow">◆</span>
-      <span>Neurodiversidade</span><span class="glow">◆</span>
-      <span>Desenvolvimento Infantil</span><span class="glow">◆</span>
-      <span>Neuropsicopedagogia</span><span class="glow">◆</span>
-      <span>TEA</span><span class="glow">◆</span>
-      <span>Orientação Familiar</span><span class="glow">◆</span>
-      <span>ABA</span><span class="glow">◆</span>
+  <div class="marquee-wrap">
+    <div class="marquee-inner">
+      <span>Autismo</span><span class="accent">✦</span>
+      <span>TDAH</span><span class="accent">✦</span>
+      <span>Neurodiversidade</span><span class="accent">✦</span>
+      <span>Desenvolvimento Infantil</span><span class="accent">✦</span>
+      <span>Neuropsicopedagogia</span><span class="accent">✦</span>
+      <span>TEA</span><span class="accent">✦</span>
+      <span>Orientação Familiar</span><span class="accent">✦</span>
+      <span>ABA</span><span class="accent">✦</span>
+      <span>Autismo</span><span class="accent">✦</span>
+      <span>TDAH</span><span class="accent">✦</span>
+      <span>Neurodiversidade</span><span class="accent">✦</span>
+      <span>Desenvolvimento Infantil</span><span class="accent">✦</span>
+      <span>Neuropsicopedagogia</span><span class="accent">✦</span>
+      <span>TEA</span><span class="accent">✦</span>
+      <span>Orientação Familiar</span><span class="accent">✦</span>
+      <span>ABA</span><span class="accent">✦</span>
     </div>
   </div>
 
-  <!-- SKILLS -->
-  <div class="sect" style="margin-top:36px">
+  <!-- ESPECIALIDADES -->
+  <div class="sect-head" style="margin-top:36px">
     <div class="sect-line"></div>
-    <div class="sect-tag">// Skills</div>
+    <div class="sect-label">Especialidades</div>
     <div class="sect-line"></div>
   </div>
 
-  <div class="skills">
-    <span class="skill">Autismo (TEA)</span>
-    <span class="skill">TDAH</span>
-    <span class="skill">Neuropsicopedagogia</span>
-    <span class="skill">Avaliação Neurocognitiva</span>
-    <span class="skill">Orientação a Pais</span>
-    <span class="skill">ABA</span>
-    <span class="skill">Desenvolvimento Infantil</span>
-    <span class="skill">Análise Comportamental</span>
-    <span class="skill">Intervenção Precoce</span>
+  <div class="pills">
+    <span class="pill">Autismo (TEA)</span>
+    <span class="pill">TDAH</span>
+    <span class="pill">Neuropsicopedagogia</span>
+    <span class="pill">Avaliação Neurocognitiva</span>
+    <span class="pill">Orientação a Pais</span>
+    <span class="pill">ABA</span>
+    <span class="pill">Desenvolvimento Infantil</span>
   </div>
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-name">Margareth Almeida</div>
-    <div class="footer-sub">NEUROPSICOPEDAGOGA · AUTISMO & TDAH</div>
+    <div class="footer-sig">Margareth Almeida</div>
+    <div class="footer-crp">NEUROPSICOPEDAGOGA · AUTISMO & TDAH</div>
   </div>
 
 </div>
@@ -852,63 +772,44 @@ body{
 // === PARTICLES ===
 (function(){
   const c=document.getElementById('particles');
-  const colors=['rgba(0,240,255,','rgba(123,47,255,','rgba(255,0,170,'];
-  for(let i=0;i<30;i++){
+  const colors=['rgba(184,115,58,','rgba(232,160,96,','rgba(26,74,110,'];
+  for(let i=0;i<20;i++){
     const p=document.createElement('div');
     p.classList.add('particle');
-    const s=Math.random()*3+1;
+    const s=Math.random()*2.5+0.5;
     const color=colors[Math.floor(Math.random()*3)];
-    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${color}${(Math.random()*0.5+0.2).toFixed(2)};box-shadow:0 0 ${s*3}px ${color}${(Math.random()*0.3).toFixed(2)};animation-duration:${Math.random()*12+8}s;animation-delay:${Math.random()*10}s;--drift:${(Math.random()*80-40).toFixed(0)}px;`;
+    p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${color}${(Math.random()*0.4+0.15).toFixed(2)};box-shadow:0 0 ${s*3}px ${color}${(Math.random()*0.2).toFixed(2)};animation-duration:${Math.random()*14+10}s;animation-delay:${Math.random()*10}s;--drift:${(Math.random()*60-30).toFixed(0)}px;`;
     c.appendChild(p);
   }
 })();
 
 // === CURSOR ===
 (function(){
-  const dot=document.getElementById('cursorDot');
-  const trail=document.getElementById('cursorTrail');
-  let mx=0,my=0,tx=0,ty=0;
+  const dot=document.querySelector('.cursor-dot');
+  const ring=document.getElementById('ring');
+  let mx=0,my=0,rx=0,ry=0;
   if(window.matchMedia('(hover:none)').matches)return;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px'});
-  (function loop(){
-    tx+=(mx-tx)*0.1;ty+=(my-ty)*0.1;
-    trail.style.left=tx+'px';trail.style.top=ty+'px';
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    dot.style.left=mx+'px';dot.style.top=my+'px';
+  });
+  function lerp(a,b,t){return a+(b-a)*t}
+  function loop(){
+    rx=lerp(rx,mx,0.12);ry=lerp(ry,my,0.12);
+    ring.style.left=rx+'px';ring.style.top=ry+'px';
     requestAnimationFrame(loop);
-  })();
-  document.querySelectorAll('.card,.soc-pill,.skill').forEach(el=>{
+  }
+  loop();
+  document.querySelectorAll('.lnk,.soc,.pill,.wa-float').forEach(el=>{
     el.addEventListener('mouseenter',()=>{
-      dot.style.transform='translate(-50%,-50%) scale(2.5)';
-      dot.style.background='var(--magenta)';
-      dot.style.boxShadow='0 0 20px var(--magenta)';
-      trail.style.transform='translate(-50%,-50%) scale(2)';
-      trail.style.borderColor='rgba(255,0,170,0.3)';
+      ring.style.transform='translate(-50%,-50%) scale(1.8)';
+      ring.style.borderColor='rgba(184,115,58,0.5)';
     });
     el.addEventListener('mouseleave',()=>{
-      dot.style.transform='translate(-50%,-50%) scale(1)';
-      dot.style.background='var(--cyan)';
-      dot.style.boxShadow='0 0 12px var(--cyan)';
-      trail.style.transform='translate(-50%,-50%) scale(1)';
-      trail.style.borderColor='rgba(0,240,255,0.2)';
+      ring.style.transform='translate(-50%,-50%) scale(1)';
+      ring.style.borderColor='rgba(255,255,255,0.4)';
     });
   });
-})();
-
-// === CARD GLARE ===
-document.querySelectorAll('.card').forEach(card=>{
-  card.addEventListener('mousemove',e=>{
-    const r=card.getBoundingClientRect();
-    card.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
-    card.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
-  });
-});
-
-// === TILT ON SCROLL ===
-(function(){
-  const hero=document.querySelector('.hero');
-  window.addEventListener('scroll',()=>{
-    const s=window.scrollY;
-    hero.style.transform=`perspective(800px) rotateX(${Math.min(s*0.0005,0.03)}rad)`;
-  },{passive:true});
 })();
 
 // === CAROUSEL ===
@@ -928,7 +829,6 @@ document.querySelectorAll('.card').forEach(card=>{
   nextBtn.addEventListener('click',()=>goTo(current+1));
   dots.forEach((d,i)=>d.addEventListener('click',()=>goTo(i)));
   setInterval(()=>goTo(current+1),5000);
-  // Touch swipe
   let sx=0;
   const wrap=document.getElementById('carousel');
   wrap.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
