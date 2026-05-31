@@ -240,6 +240,98 @@ body{
   white-space:nowrap;
 }
 
+
+/* === CAA NEURO FEATURE CARD === */
+.caa-feature{
+  display:block;
+  margin:0 0 26px;
+  padding:22px 20px;
+  border-radius:22px;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at top left,rgba(78,201,160,0.28),transparent 42%),
+    linear-gradient(135deg,rgba(78,201,160,0.18),rgba(184,115,58,0.10),rgba(13,27,42,0.85));
+  border:1px solid rgba(78,201,160,0.55);
+  box-shadow:0 18px 55px rgba(0,0,0,0.38),0 0 38px rgba(78,201,160,0.14);
+  opacity:0;
+  animation:up 0.7s 0.62s ease forwards;
+}
+.caa-feature:hover{
+  transform:translateY(-4px) scale(1.01);
+  box-shadow:0 22px 70px rgba(0,0,0,0.48),0 0 55px rgba(78,201,160,0.24);
+}
+.caa-feature-top{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:14px;
+}
+.caa-feature-icon{
+  width:54px;
+  height:54px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  background:rgba(78,201,160,0.14);
+  border:1px solid rgba(78,201,160,0.35);
+  box-shadow:inset 0 0 18px rgba(78,201,160,0.08);
+}
+.caa-feature-kicker{
+  font-size:9px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#4ec9a0;
+  font-weight:700;
+  margin-bottom:4px;
+}
+.caa-feature-title{
+  font-family:'Playfair Display',serif;
+  font-size:23px;
+  line-height:1.1;
+  color:var(--white);
+  font-weight:900;
+}
+.caa-feature-copy{
+  font-size:13px;
+  line-height:1.6;
+  color:rgba(255,255,255,0.72);
+  margin-bottom:14px;
+}
+.caa-feature-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-bottom:16px;
+}
+.caa-feature-pills span{
+  font-size:10px;
+  color:rgba(255,255,255,0.78);
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.05);
+  border-radius:999px;
+  padding:6px 10px;
+}
+.caa-feature-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  width:100%;
+  padding:13px 16px;
+  border-radius:14px;
+  background:linear-gradient(135deg,#00885f,#4ec9a0);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:1.4px;
+  text-transform:uppercase;
+  box-shadow:0 10px 30px rgba(78,201,160,0.26);
+}
+
 /* === CAROUSEL === */
 .carousel-wrap{
   position:relative;
@@ -585,6 +677,29 @@ body{
       </a>
     </div>
   </div>
+
+
+  <!-- CAA NEURO FEATURE -->
+  <a href="https://www.adhdautism.online/" class="caa-feature" target="_blank" rel="noopener">
+    <div class="caa-feature-top">
+      <div class="caa-feature-icon">🧩</div>
+      <div>
+        <div class="caa-feature-kicker">App gratuito</div>
+        <div class="caa-feature-title">CAA NEURO</div>
+      </div>
+    </div>
+    <div class="caa-feature-copy">
+      Pranchas de Comunicação Alternativa e pareamento para crianças com TEA, TDAH e necessidades de apoio. Acesse, teste e baixe gratuitamente.
+    </div>
+    <div class="caa-feature-pills">
+      <span>Pranchas grátis</span>
+      <span>Pareamento</span>
+      <span>Comunicação CAA</span>
+      <span>Baixar cards</span>
+    </div>
+    <div class="caa-feature-btn">Abrir CAA NEURO gratuitamente →</div>
+  </a>
+
 
   <!-- CAROUSEL NO TOPO -->
   <div class="carousel-wrap" id="carousel">
