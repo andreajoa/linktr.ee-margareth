@@ -103,6 +103,76 @@ body{
   100%{background:linear-gradient(90deg,rgba(184,115,58,0.22),rgba(232,160,96,0.12),rgba(184,115,58,0.22))}
 }
 
+/* === LIVRO EM DESTAQUE === */
+.book-promo{
+  position:relative;
+  width:100%;
+  aspect-ratio:2 / 1;
+  margin-top:24px;
+  overflow:hidden;
+  border-radius:20px;
+  background:#081521;
+  border:1px solid rgba(184,115,58,0.42);
+  box-shadow:0 18px 55px rgba(0,0,0,0.38),0 0 34px rgba(184,115,58,0.10);
+  opacity:0;
+  animation:up 0.7s 0.1s ease forwards;
+}
+.book-promo-slide{
+  position:absolute;
+  inset:0;
+  display:block;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 1.1s ease,visibility 0s linear 1.1s;
+}
+.book-promo-slide.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transition:opacity 1.1s ease,visibility 0s;
+}
+.book-promo-slide img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform 0.5s ease;
+}
+.book-promo-slide:hover img{transform:scale(1.015)}
+.book-promo-nav{
+  position:absolute;
+  z-index:3;
+  left:50%;
+  bottom:10px;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:6px 9px;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:999px;
+  background:rgba(5,15,25,0.68);
+  backdrop-filter:blur(8px);
+}
+.book-promo-dot{
+  appearance:none;
+  width:7px;
+  height:7px;
+  padding:0;
+  border:0;
+  border-radius:999px;
+  background:rgba(255,255,255,0.38);
+  cursor:pointer;
+  transition:width 0.3s ease,background 0.3s ease,box-shadow 0.3s ease;
+}
+.book-promo-dot.active{
+  width:24px;
+  background:var(--gold2);
+  box-shadow:0 0 10px rgba(232,160,96,0.7);
+}
+.book-promo + .hero{padding-top:48px}
+
 /* === MAIN === */
 .wrap{
   position:relative;z-index:10;
@@ -612,6 +682,9 @@ body{
 /* === RESPONSIVE === */
 @media(max-width:600px){
   .wrap{padding:0 16px 80px}
+  .book-promo{margin-top:16px;border-radius:16px}
+  .book-promo-nav{bottom:7px;padding:5px 8px}
+  .book-promo + .hero{padding-top:40px}
   .photo-ring{width:100px;height:100px}
   .lnk{padding:16px 18px;gap:12px}
   .lnk-icon{width:42px;height:42px;font-size:20px}
@@ -622,7 +695,11 @@ body{
 @media(hover:none){
   body{cursor:auto}
   .cursor,.cursor-ring{display:none !important}
-  .lnk,.soc,.pill,.carousel-btn,.carousel-dot,.wa-float{cursor:pointer}
+  .lnk,.soc,.pill,.carousel-btn,.carousel-dot,.book-promo-slide,.book-promo-dot,.wa-float{cursor:pointer}
+}
+@media(prefers-reduced-motion:reduce){
+  .book-promo-slide{transition:none}
+  .book-promo-slide img{transition:none}
 }
 </style>
 </head>
@@ -650,6 +727,20 @@ body{
 </div>
 
 <div class="wrap">
+
+  <!-- LIVRO EM DESTAQUE -->
+  <section class="book-promo" id="bookPromo" aria-label="Os Dois Iguais e o Segredo do Coração">
+    <a href="https://www.amazon.com.br/dp/B0GX34WYNL" class="book-promo-slide active" target="_blank" rel="noopener sponsored" aria-label="Comprar o eBook Os Dois Iguais e o Segredo do Coração na Amazon" aria-hidden="false">
+      <img src="downloads/livro2-gueth.png" width="1774" height="887" alt="Os Dois Iguais e o Segredo do Coração — disponível em eBook" fetchpriority="high" decoding="async">
+    </a>
+    <a href="https://www.amazon.com.br/dp/B0H9GKJN2X" class="book-promo-slide" target="_blank" rel="noopener sponsored" aria-label="Comprar o livro físico Os Dois Iguais e o Segredo do Coração na Amazon" aria-hidden="true" tabindex="-1">
+      <img src="downloads/livro-gueth.png" width="1774" height="887" alt="Os Dois Iguais e o Segredo do Coração — disponível em livro físico" decoding="async">
+    </a>
+    <div class="book-promo-nav" aria-label="Escolher edição do livro">
+      <button class="book-promo-dot active" type="button" aria-label="Ver eBook" aria-pressed="true"></button>
+      <button class="book-promo-dot" type="button" aria-label="Ver livro físico" aria-pressed="false"></button>
+    </div>
+  </section>
 
   <!-- HERO -->
   <div class="hero">
@@ -935,6 +1026,58 @@ body{
     p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;background:${color}${(Math.random()*0.4+0.15).toFixed(2)};box-shadow:0 0 ${s*3}px ${color}${(Math.random()*0.2).toFixed(2)};animation-duration:${Math.random()*14+10}s;animation-delay:${Math.random()*10}s;--drift:${(Math.random()*60-30).toFixed(0)}px;`;
     c.appendChild(p);
   }
+})();
+
+// === LIVRO EM DESTAQUE — FADE ===
+(function(){
+  const promo=document.getElementById('bookPromo');
+  if(!promo)return;
+  const slides=[...promo.querySelectorAll('.book-promo-slide')];
+  const dots=[...promo.querySelectorAll('.book-promo-dot')];
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let current=0;
+  let timer=null;
+
+  function show(index){
+    current=((index%slides.length)+slides.length)%slides.length;
+    slides.forEach((slide,i)=>{
+      const active=i===current;
+      slide.classList.toggle('active',active);
+      slide.setAttribute('aria-hidden',String(!active));
+      slide.tabIndex=active?0:-1;
+    });
+    dots.forEach((dot,i)=>{
+      const active=i===current;
+      dot.classList.toggle('active',active);
+      dot.setAttribute('aria-pressed',String(active));
+    });
+  }
+
+  function stop(){
+    if(timer){
+      clearInterval(timer);
+      timer=null;
+    }
+  }
+
+  function start(){
+    stop();
+    if(!reduceMotion)timer=setInterval(()=>show(current+1),5000);
+  }
+
+  dots.forEach((dot,i)=>dot.addEventListener('click',()=>{
+    show(i);
+    start();
+  }));
+  promo.addEventListener('mouseenter',stop);
+  promo.addEventListener('mouseleave',start);
+  promo.addEventListener('focusin',stop);
+  promo.addEventListener('focusout',start);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)stop();
+    else start();
+  });
+  start();
 })();
 
 // === CURSOR ===
