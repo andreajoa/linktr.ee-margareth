@@ -402,6 +402,115 @@ body{
   box-shadow:0 10px 30px rgba(78,201,160,0.26);
 }
 
+/* === MATERIAL EM DESTAQUE === */
+.product-feature{
+  display:block;
+  margin:0 0 26px;
+  padding:18px;
+  border-radius:22px;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 90% 8%,rgba(232,180,168,0.22),transparent 34%),
+    linear-gradient(135deg,rgba(199,107,74,0.22),rgba(27,45,91,0.72));
+  border:1px solid rgba(199,107,74,0.62);
+  box-shadow:0 18px 55px rgba(0,0,0,0.42),0 0 38px rgba(199,107,74,0.16);
+  opacity:0;
+  animation:up 0.7s 0.64s ease forwards;
+  transition:transform 0.35s ease,box-shadow 0.35s ease,border-color 0.35s ease;
+}
+.product-feature:hover{
+  transform:translateY(-4px) scale(1.01);
+  border-color:rgba(232,180,168,0.88);
+  box-shadow:0 24px 72px rgba(0,0,0,0.5),0 0 50px rgba(199,107,74,0.24);
+}
+.product-feature__tag{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:14px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:rgba(199,107,74,0.18);
+  border:1px solid rgba(232,180,168,0.34);
+  color:#F2E8E1;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.product-feature__content{
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  gap:18px;
+  align-items:center;
+}
+.product-feature__cover{
+  width:112px;
+  aspect-ratio:700 / 990;
+  object-fit:cover;
+  border-radius:13px;
+  border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 12px 30px rgba(0,0,0,0.38);
+}
+.product-feature__eyebrow{
+  color:#E8B4A8;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+.product-feature__title{
+  font-family:'Playfair Display',serif;
+  color:#FFFDF9;
+  font-size:24px;
+  line-height:1.05;
+  margin-bottom:8px;
+}
+.product-feature__copy{
+  color:rgba(255,255,255,0.7);
+  font-size:12px;
+  line-height:1.55;
+  margin-bottom:12px;
+}
+.product-feature__bottom{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.product-feature__price{
+  color:#FFFDF9;
+  font-family:'Playfair Display',serif;
+  font-size:22px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.product-feature__btn{
+  flex:1;
+  min-width:0;
+  padding:11px 12px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#C76B4A,#BF6040);
+  color:#fff;
+  text-align:center;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.9px;
+  text-transform:uppercase;
+  box-shadow:0 10px 24px rgba(199,107,74,0.28);
+}
+@media(max-width:430px){
+  .product-feature{padding:15px}
+  .product-feature__content{grid-template-columns:92px minmax(0,1fr);gap:13px}
+  .product-feature__cover{width:92px}
+  .product-feature__title{font-size:20px}
+  .product-feature__copy{font-size:11px}
+  .product-feature__bottom{align-items:stretch;flex-direction:column;gap:8px}
+  .product-feature__price{font-size:20px}
+}
+
 /* === CAROUSEL === */
 .carousel-wrap{
   position:relative;
@@ -792,6 +901,24 @@ body{
   </a>
 
 
+  <!-- MATERIAL EM DESTAQUE -->
+  <a href="https://descobrindo-os-cinco-sentidos.vercel.app/" class="product-feature" target="_blank" rel="noopener" aria-label="Conhecer o material Descubra os Sentidos">
+    <div class="product-feature__tag">✦ Novo material</div>
+    <div class="product-feature__content">
+      <img class="product-feature__cover" src="https://descobrindo-os-cinco-sentidos.vercel.app/previews/capa.webp" alt="Capa do material Descubra os Sentidos" loading="lazy" decoding="async">
+      <div>
+        <div class="product-feature__eyebrow">Atividades pedagógicas</div>
+        <h2 class="product-feature__title">Descubra os Sentidos</h2>
+        <p class="product-feature__copy">26 páginas com 17 atividades visuais prontas para imprimir, recortar e aplicar.</p>
+        <div class="product-feature__bottom">
+          <strong class="product-feature__price">R$ 9,90</strong>
+          <span class="product-feature__btn">Ver o material →</span>
+        </div>
+      </div>
+    </div>
+  </a>
+
+
   <!-- CAROUSEL NO TOPO -->
   <div class="carousel-wrap" id="carousel">
     <div class="carousel-track" id="carouselTrack">
@@ -1097,7 +1224,7 @@ body{
     requestAnimationFrame(loop);
   }
   loop();
-  document.querySelectorAll('.lnk,.soc,.pill,.wa-float').forEach(el=>{
+  document.querySelectorAll('.lnk,.soc,.pill,.product-feature,.wa-float').forEach(el=>{
     el.addEventListener('mouseenter',()=>{
       ring.style.transform='translate(-50%,-50%) scale(1.8)';
       ring.style.borderColor='rgba(184,115,58,0.5)';
