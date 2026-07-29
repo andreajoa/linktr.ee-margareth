@@ -402,6 +402,173 @@ body{
   box-shadow:0 10px 30px rgba(78,201,160,0.26);
 }
 
+/* === NÃO ERA FALTA DE AMOR — DESTAQUE === */
+.amor-feature{
+  display:grid;
+  grid-template-columns:42% 58%;
+  position:relative;
+  min-height:318px;
+  margin:0 0 26px;
+  overflow:hidden;
+  border-radius:24px;
+  border:1px solid rgba(232,160,96,0.72);
+  background:#F7E9D8;
+  box-shadow:0 24px 70px rgba(0,0,0,0.5),0 0 46px rgba(232,160,96,0.18);
+  text-decoration:none;
+  opacity:0;
+  animation:up 0.7s 0.63s ease forwards;
+  transition:transform 0.35s ease,box-shadow 0.35s ease,border-color 0.35s ease;
+}
+.amor-feature::after{
+  content:"";
+  position:absolute;
+  right:-70px;
+  top:-95px;
+  width:230px;
+  height:230px;
+  border-radius:50%;
+  background:rgba(240,128,64,0.19);
+  filter:blur(10px);
+  pointer-events:none;
+}
+.amor-feature:hover{
+  transform:translateY(-4px) scale(1.01);
+  border-color:rgba(255,185,108,0.98);
+  box-shadow:0 30px 84px rgba(0,0,0,0.56),0 0 60px rgba(232,160,96,0.26);
+}
+.amor-feature:focus-visible{
+  outline:3px solid #F4A261;
+  outline-offset:4px;
+}
+.amor-feature__visual{
+  position:relative;
+  min-width:0;
+  overflow:hidden;
+}
+.amor-feature__cover{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  transition:transform 0.55s ease;
+}
+.amor-feature:hover .amor-feature__cover{
+  transform:scale(1.035);
+}
+.amor-feature__visual::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent 70%,rgba(247,233,216,0.88));
+  pointer-events:none;
+}
+.amor-feature__badge{
+  position:absolute;
+  z-index:2;
+  left:12px;
+  bottom:13px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(13,27,42,0.92);
+  border:1px solid rgba(255,255,255,0.24);
+  color:#fff;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1.25px;
+  text-transform:uppercase;
+  box-shadow:0 8px 24px rgba(0,0,0,0.28);
+}
+.amor-feature__content{
+  position:relative;
+  z-index:2;
+  min-width:0;
+  padding:22px 19px 20px 17px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  color:#0D1B2A;
+}
+.amor-feature__eyebrow{
+  margin-bottom:8px;
+  color:#B45434;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:1.65px;
+  text-transform:uppercase;
+}
+.amor-feature__title{
+  margin-bottom:10px;
+  font-family:'Playfair Display',serif;
+  color:#172A43;
+  font-size:28px;
+  font-weight:900;
+  line-height:0.98;
+  letter-spacing:-0.7px;
+}
+.amor-feature__copy{
+  margin-bottom:12px;
+  color:#4F443E;
+  font-size:11.5px;
+  font-weight:500;
+  line-height:1.48;
+}
+.amor-feature__benefits{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:14px;
+}
+.amor-feature__benefits span{
+  padding:5px 7px;
+  border:1px solid rgba(23,42,67,0.16);
+  border-radius:999px;
+  background:rgba(255,255,255,0.54);
+  color:#5A463C;
+  font-size:8px;
+  font-weight:700;
+  white-space:nowrap;
+}
+.amor-feature__price{
+  display:flex;
+  align-items:baseline;
+  gap:7px;
+  margin-bottom:10px;
+}
+.amor-feature__price del{
+  color:#877269;
+  font-size:10px;
+}
+.amor-feature__price strong{
+  color:#B45434;
+  font-family:'Playfair Display',serif;
+  font-size:25px;
+  font-weight:900;
+}
+.amor-feature__btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  padding:12px 10px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#172A43,#B45434);
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:0.85px;
+  text-align:center;
+  text-transform:uppercase;
+  box-shadow:0 10px 25px rgba(23,42,67,0.24);
+  transition:transform 0.25s ease,box-shadow 0.25s ease;
+}
+.amor-feature:hover .amor-feature__btn{
+  transform:translateY(-1px);
+  box-shadow:0 13px 30px rgba(23,42,67,0.32);
+}
+
 /* === MATERIAL EM DESTAQUE === */
 .ebook-feature{
   display:block;
@@ -600,6 +767,20 @@ body{
   box-shadow:0 10px 24px rgba(199,107,74,0.28);
 }
 @media(max-width:430px){
+  .amor-feature{
+    grid-template-columns:40% 60%;
+    min-height:304px;
+    border-radius:21px;
+  }
+  .amor-feature__content{padding:17px 14px 16px 12px}
+  .amor-feature__title{font-size:23px}
+  .amor-feature__copy{font-size:10.5px;line-height:1.42}
+  .amor-feature__benefits{gap:5px;margin-bottom:11px}
+  .amor-feature__benefits span{padding:4px 6px;font-size:7.5px}
+  .amor-feature__price{margin-bottom:8px}
+  .amor-feature__price strong{font-size:22px}
+  .amor-feature__btn{padding:10px 7px;font-size:7.5px;letter-spacing:0.7px}
+  .amor-feature__badge{left:8px;bottom:10px;padding:6px 8px;font-size:7px}
   .ebook-feature{min-height:255px}
   .ebook-feature__shade{background:linear-gradient(90deg,rgba(250,241,231,0.99) 0%,rgba(250,241,231,0.94) 47%,rgba(250,241,231,0.18) 72%,transparent 82%)}
   .ebook-feature__copy{width:61%;min-height:255px;padding:18px 0 18px 17px}
@@ -909,7 +1090,7 @@ body{
 @media(hover:none){
   body{cursor:auto}
   .cursor,.cursor-ring{display:none !important}
-  .lnk,.soc,.pill,.carousel-btn,.carousel-dot,.book-promo-slide,.book-promo-dot,.wa-float{cursor:pointer}
+  .lnk,.soc,.pill,.amor-feature,.carousel-btn,.carousel-dot,.book-promo-slide,.book-promo-dot,.wa-float{cursor:pointer}
 }
 @media(prefers-reduced-motion:reduce){
   .book-promo-slide{transition:none}
@@ -1005,6 +1186,27 @@ body{
     <div class="caa-feature-btn">Abrir CAA NEURO gratuitamente →</div>
   </a>
 
+  <!-- NÃO ERA FALTA DE AMOR — DESTAQUE -->
+  <a href="https://margarethebook.vercel.app/" class="amor-feature" target="_blank" rel="noopener" aria-label="Conhecer o guia Não Era Falta de Amor por R$ 9,90">
+    <div class="amor-feature__visual">
+      <img class="amor-feature__cover" src="image/nao-era-falta-de-amor.webp" width="640" height="960" alt="Capa do guia Não Era Falta de Amor" loading="eager" decoding="async">
+      <span class="amor-feature__badge">✦ Novo guia</span>
+    </div>
+    <div class="amor-feature__content">
+      <div class="amor-feature__eyebrow">Para pais e cuidadores</div>
+      <h2 class="amor-feature__title">Não Era Falta de Amor</h2>
+      <p class="amor-feature__copy">Entenda as crises. Reduza a culpa. Aja com mais segurança.</p>
+      <div class="amor-feature__benefits">
+        <span>✓ Leitura online</span>
+        <span>✓ PDF incluso</span>
+      </div>
+      <div class="amor-feature__price">
+        <del>R$ 19,90</del>
+        <strong>R$ 9,90</strong>
+      </div>
+      <span class="amor-feature__btn">Quero meu guia →</span>
+    </div>
+  </a>
 
   <!-- EBOOK EM DESTAQUE -->
   <a href="https://pequenos-gigantes-ebook.vercel.app/" class="ebook-feature" target="_blank" rel="noopener" aria-label="Comprar o e-book Pequenos Gigantes por R$ 9,90">
@@ -1336,7 +1538,7 @@ body{
     requestAnimationFrame(loop);
   }
   loop();
-  document.querySelectorAll('.lnk,.soc,.pill,.ebook-feature,.product-feature,.wa-float').forEach(el=>{
+  document.querySelectorAll('.lnk,.soc,.pill,.amor-feature,.ebook-feature,.product-feature,.wa-float').forEach(el=>{
     el.addEventListener('mouseenter',()=>{
       ring.style.transform='translate(-50%,-50%) scale(1.8)';
       ring.style.borderColor='rgba(184,115,58,0.5)';
