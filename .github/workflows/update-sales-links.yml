@@ -1,5 +1,6 @@
 name: Atualizar links comerciais
 
+# Execução única para aplicar os novos destinos da página.
 on:
   push:
     branches: [main]
@@ -27,7 +28,6 @@ jobs:
           text = path.read_text(encoding='utf-8')
           original = text
 
-          # Cartão que antes divulgava materiais gratuitos.
           text = text.replace(
               'href="https://template-link.vercel.app/"',
               'href="https://apostila-promo.vercel.app/"'
@@ -41,27 +41,24 @@ jobs:
               '<p>Escolha uma apostila ou leve a coleção completa</p>'
           )
 
-          # Todas as ocorrências conhecidas do antigo endereço do livro.
-          old_leo_urls = [
+          for old_url in (
               'https://mundo-do-leo.base44.app/',
               'https://mundo-do-leo.base44.app',
               'https://mundo-colorido-de-leo.base44.app/',
               'https://mundo-colorido-de-leo.base44.app',
-          ]
-          for old_url in old_leo_urls:
+          ):
               text = text.replace(old_url, 'https://mundo-colorido-de-leo.vercel.app/')
 
           if text == original:
-              raise SystemExit('Nenhuma substituição foi aplicada. Verifique o conteúdo atual do index.html.')
-
+              raise SystemExit('Nenhuma substituição foi aplicada.')
           if 'Baixe Materiais Grátis' in text:
-              raise SystemExit('O texto antigo Baixe Materiais Grátis ainda está presente.')
+              raise SystemExit('O texto antigo ainda está presente.')
           if 'mundo-do-leo.base44.app' in text or 'mundo-colorido-de-leo.base44.app' in text:
               raise SystemExit('Um endereço antigo do livro ainda está presente.')
           if 'https://apostila-promo.vercel.app/' not in text:
               raise SystemExit('O novo endereço das apostilas não foi inserido.')
           if 'https://mundo-colorido-de-leo.vercel.app/' not in text:
-              raise SystemExit('O novo endereço de O Mundo Colorido de Léo não foi inserido.')
+              raise SystemExit('O novo endereço do livro não foi inserido.')
 
           path.write_text(text, encoding='utf-8')
 
