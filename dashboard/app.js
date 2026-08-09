@@ -22,6 +22,10 @@
   function duration(seconds) { const value=Math.round(n(seconds)); if(value<60)return `${value}s`; return `${Math.floor(value/60)}m ${value%60}s`; }
   function when(value) { try{return new Date(value).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});}catch{return '—';} }
   function empty(cols, text) { return `<tr><td class="empty" colspan="${cols}">${esc(text)}</td></tr>`; }
+  function timeoutSignal(milliseconds) {
+    if(typeof AbortSignal.timeout==='function')return AbortSignal.timeout(milliseconds);
+    const controller=new AbortController();setTimeout(()=>controller.abort(),milliseconds);return controller.signal;
+  }
 
   let tokenPromise=null;
   function anonymousToken() {
@@ -30,7 +34,7 @@
       const cached=JSON.parse(sessionStorage.getItem(TOKEN_KEY)||'null');
       if(cached?.token&&Number(cached.expiresAt)>Math.floor(Date.now()/1000)+60)return Promise.resolve(cached.token);
     }catch{}
-    tokenPromise=fetch(`${AUTH_URL}/token/anonymous`,{headers:{Accept:'application/json'},cache:'no-store'})
+    tokenPromise=fetch(`${AUTH_URL}/token/anonymous`,{headers:{Accept:'application/json'},cache:'no-store',signal:timeoutSignal(8000)})
       .then(async(response)=>{const data=await response.json().catch(()=>({}));if(!response.ok||!data.token)throw new Error('Falha na conexão segura.');sessionStorage.setItem(TOKEN_KEY,JSON.stringify({token:data.token,expiresAt:Number(data.expires_at||0)}));return data.token;})
       .catch((error)=>{tokenPromise=null;throw error;});
     return tokenPromise;
@@ -38,16 +42,18 @@
 
   async function directRpc(name,body) {
     const token=await anonymousToken();
-    const response=await fetch(`${DATA_API_URL}/rpc/${name}`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body),cache:'no-store'});
+    const response=await fetch(`${DATA_API_URL}/rpc/${name}`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body),cache:'no-store',signal:timeoutSignal(12000)});
     const data=await response.json().catch(()=>({}));
     if(!response.ok){const error=new Error('rpc_failed');error.status=response.status;throw error;}
     return data;
   }
 
   async function sameOriginRpc(path,body) {
-    const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
+    let response;
+    try{response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store',signal:timeoutSignal(22000)});}
+    catch{throw new Error('A conexão demorou mais que o esperado. Tente entrar novamente.');}
     const data=await response.json().catch(()=>({}));
-    if(!response.ok)throw new Error(data.error||'Não foi possível abrir o painel.');
+    if(!response.ok){const error=new Error(data.error||'Não foi possível abrir o painel.');error.status=response.status;throw error;}
     return data;
   }
 
@@ -55,12 +61,13 @@
   function cachedDashboard(){try{return JSON.parse(sessionStorage.getItem(dataCacheKey())||'null');}catch{return null;}}
   function clearDashboardSession(){for(const key of Object.keys(sessionStorage))if(key===PASSWORD_KEY||key===TOKEN_KEY||key.startsWith(CACHE_PREFIX))sessionStorage.removeItem(key);}
 
-  const warmPromise=directRpc('track_link_event',{payload:{}}).then(()=>true).catch(async()=>{
-    try{const response=await fetch('/api/warm',{method:'POST',cache:'no-store'});return response.status===204;}catch{return false;}
+  let directReady=false;
+  directRpc('track_link_event',{payload:{}}).then(()=>true).catch(async()=>{
+    try{const response=await fetch('/api/warm',{method:'POST',cache:'no-store',signal:timeoutSignal(10000)});return response.status===204;}catch{return false;}
   }).then((ready)=>{
+    directReady=ready;
     const status=$('connectionStatus');
     if(status){status.classList.toggle('ready',ready);status.lastChild.textContent=ready?' Conexão pronta':' Conexão será concluída ao entrar';}
-    return ready;
   });
 
   function kpi(label, value, detail, accent=false) {
@@ -195,12 +202,15 @@
     if(!state.password)return;
     if(showLoading)$('loading').hidden=false;
     try{
-      await warmPromise;
       let data;
-      try{
-        data=await directRpc('get_link_dashboard',{p_password:state.password,p_days:state.days,p_site:state.site});
-      }catch(error){
-        if(error.status===401||error.status===403)throw new Error('Senha incorreta.');
+      if(directReady){
+        try{
+          data=await directRpc('get_link_dashboard',{p_password:state.password,p_days:state.days,p_site:state.site});
+        }catch(error){
+          if(error.status===401||error.status===403)throw new Error('Senha incorreta.');
+          data=await sameOriginRpc('/api/dashboard',{password:state.password,days:state.days,site:state.site});
+        }
+      }else{
         data=await sameOriginRpc('/api/dashboard',{password:state.password,days:state.days,site:state.site});
       }
       sessionStorage.setItem(PASSWORD_KEY,state.password);
@@ -208,7 +218,9 @@
       $('login').hidden=true;$('app').hidden=false;$('loginError').textContent='';
       render(data);
     }catch(error){
-      clearDashboardSession();state.password='';$('app').hidden=true;$('login').hidden=false;
+      if(!showLoading&&state.data)return;
+      if(error.status===401||error.status===403||error.message==='Senha incorreta.'){clearDashboardSession();state.password='';}
+      $('app').hidden=true;$('login').hidden=false;
       $('loginError').textContent=error.message||'Senha incorreta.';
     }finally{$('loading').hidden=true;}
   }
@@ -218,10 +230,14 @@
     content.innerHTML='<div class="journey"><h2>Carregando jornada...</h2></div>';modal.showModal();
     try{
       let data;
-      try{
-        data=await directRpc('get_link_journey',{p_password:state.password,p_session_id:sessionId});
-      }catch(error){
-        if(error.status===401||error.status===403)throw new Error('Não foi possível abrir esta jornada.');
+      if(directReady){
+        try{
+          data=await directRpc('get_link_journey',{p_password:state.password,p_session_id:sessionId});
+        }catch(error){
+          if(error.status===401||error.status===403)throw new Error('Não foi possível abrir esta jornada.');
+          data=await sameOriginRpc('/api/journey',{password:state.password,sessionId});
+        }
+      }else{
         data=await sameOriginRpc('/api/journey',{password:state.password,sessionId});
       }
       const sessions=data.sessions||[],events=data.events||[],root=sessions[0]||{};

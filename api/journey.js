@@ -22,7 +22,11 @@ export default async function handler(request, response) {
       p_session_id:sessionId,
     });
     return response.status(200).json(data);
-  } catch {
-    return response.status(401).json({ error:'Não foi possível abrir esta jornada.' });
+  } catch (error) {
+    if (error?.status === 401 || error?.status === 403) {
+      return response.status(401).json({ error:'Não foi possível abrir esta jornada.' });
+    }
+    console.error('journey_rpc_error', { status:error?.status || 0, message:error instanceof Error ? error.message : 'unknown' });
+    return response.status(503).json({ error:'A conexão demorou. Tente abrir a jornada novamente.' });
   }
 }
