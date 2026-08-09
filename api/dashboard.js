@@ -22,7 +22,11 @@ export default async function handler(request, response) {
       p_site:site,
     });
     return response.status(200).json(data);
-  } catch {
-    return response.status(401).json({ error:'Senha incorreta ou painel indisponível.' });
+  } catch (error) {
+    if (error?.status === 401 || error?.status === 403) {
+      return response.status(401).json({ error:'Senha incorreta.' });
+    }
+    console.error('dashboard_rpc_error', { status:error?.status || 0, message:error instanceof Error ? error.message : 'unknown' });
+    return response.status(503).json({ error:'O banco demorou para responder. Tente entrar novamente.' });
   }
 }

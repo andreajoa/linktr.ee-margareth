@@ -11,7 +11,8 @@ export default async function handler(request, response) {
   try {
     await callAnalyticsRpc('track_link_event', { payload:{} });
     return response.status(204).end();
-  } catch {
+  } catch (error) {
+    console.warn('analytics_warmup_failed', { status:error?.status || 0, message:error instanceof Error ? error.message : 'unknown' });
     return response.status(202).end();
   }
 }
