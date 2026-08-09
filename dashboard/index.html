@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#09274B">
+  <title>Inteligência de Conversão — Margareth Almeida</title>
+  <link rel="stylesheet" href="/dashboard/styles.css">
+</head>
+<body>
+  <section class="login" id="login">
+    <form class="login-card" id="loginForm">
+      <div class="brand-mark">MA</div>
+      <p class="eyebrow">ACESSO RESERVADO</p>
+      <h1>Inteligência de Conversão</h1>
+      <p>Veja o caminho completo das pessoas, desde a página de links até a compra das apostilas.</p>
+      <label>Senha do painel<input id="password" type="password" autocomplete="current-password" required autofocus></label>
+      <button type="submit">Entrar no painel</button>
+      <p class="form-error" id="loginError" aria-live="polite"></p>
+    </form>
+  </section>
+
+  <div class="app" id="app" hidden>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div><p class="eyebrow">MARGARETH ALMEIDA</p><h1>Inteligência de Conversão</h1></div>
+        <div class="actions">
+          <div class="segmented" id="rangeFilters" aria-label="Período">
+            <button data-days="1">Hoje</button><button data-days="7" class="active">7 dias</button><button data-days="30">30 dias</button><button data-days="90">90 dias</button>
+          </div>
+          <select id="siteFilter" aria-label="Filtrar por site">
+            <option value="all">Todos os sites</option>
+            <option value="linkhub">Página de links</option>
+            <option value="apostila_combo">Combo de apostilas</option>
+          </select>
+          <button class="icon-button" id="refresh" title="Atualizar">↻</button>
+          <button class="logout" id="logout">Sair</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <div><p class="eyebrow">VISÃO ESTRATÉGICA</p><h2>Dos acessos às decisões</h2><p id="updatedAt">Carregando dados...</p></div>
+        <div class="live"><span></span> Dados reais com localização aproximada e sem armazenamento de IP</div>
+      </section>
+
+      <section class="kpi-grid" id="kpis"></section>
+
+      <section class="panel insights-panel">
+        <div class="panel-head"><div><p class="eyebrow">DIAGNÓSTICO AUTOMÁTICO</p><h2>O que fazer para melhorar</h2></div><span class="help">As recomendações mudam conforme os dados.</span></div>
+        <div class="insights" id="insights"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><div><p class="eyebrow">FUNIL COMPLETO</p><h2>Onde a pessoa avança — e onde desiste</h2></div></div>
+        <div class="funnel" id="funnel"></div>
+      </section>
+
+      <div class="grid two">
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">TENDÊNCIA</p><h2>Movimento no período</h2></div></div><div class="timeline" id="timeline"></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">PROPRIEDADES</p><h2>Desempenho por site</h2></div></div><div class="site-cards" id="sites"></div></section>
+      </div>
+
+      <div class="grid two">
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">PÁGINA DE LINKS</p><h2>O que mais recebe cliques</h2></div></div><div class="table-wrap"><table><thead><tr><th>Link/ação</th><th>Cliques</th><th>Pessoas</th><th>Taxa</th><th>Tempo até clicar</th></tr></thead><tbody id="links"></tbody></table></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">OFERTAS</p><h2>O que leva ao checkout e à compra</h2></div></div><div class="table-wrap"><table><thead><tr><th>Oferta</th><th>Comprar</th><th>Checkout</th><th>Vendas</th><th>Receita</th></tr></thead><tbody id="offers"></tbody></table></div></section>
+      </div>
+
+      <div class="grid two">
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">AQUISIÇÃO</p><h2>De onde as pessoas vêm</h2></div></div><div class="bar-list" id="sources"></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">GEOGRAFIA APROXIMADA</p><h2>Cidades, estados e países</h2></div></div><div class="bar-list" id="geography"></div></section>
+      </div>
+
+      <div class="grid three">
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">DISPOSITIVOS</p><h2>Como acessam</h2></div></div><div class="bar-list" id="devices"></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">NAVEGADORES</p><h2>Compatibilidade</h2></div></div><div class="simple-list" id="browsers"></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">HORÁRIOS</p><h2>Quando chegam</h2></div></div><div class="hour-grid" id="hours"></div></section>
+      </div>
+
+      <div class="grid two">
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">CAMPANHAS</p><h2>UTMs e anúncios identificados</h2></div></div><div class="simple-list" id="campaigns"></div></section>
+        <section class="panel"><div class="panel-head"><div><p class="eyebrow">ORIGEM × AÇÃO</p><h2>O que cada público procura</h2></div></div><div class="simple-list" id="sourceLinks"></div></section>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head"><div><p class="eyebrow">JORNADAS RECENTES</p><h2>O que aconteceu em cada visita</h2></div><span class="help">Clique em uma linha para abrir a sequência completa.</span></div>
+        <div class="table-wrap"><table class="sessions-table"><thead><tr><th>Quando</th><th>Site</th><th>Origem</th><th>Local</th><th>Dispositivo</th><th>Tempo</th><th>Cliques</th><th>Última ação</th><th>Resultado</th></tr></thead><tbody id="sessions"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+
+  <div class="loading" id="loading" hidden><span></span><p>Atualizando o diagnóstico...</p></div>
+  <dialog id="journeyModal"><button class="modal-close" id="closeJourney" aria-label="Fechar">×</button><div id="journeyContent"></div></dialog>
+  <script src="/dashboard/app.js" defer></script>
+</body>
+</html>
