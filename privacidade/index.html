@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <title>Privacidade — Margareth Almeida</title>
+  <style>
+    body{margin:0;background:#0D1B2A;color:#FFFDF9;font:16px/1.7 Arial,sans-serif}main{max-width:760px;margin:auto;padding:48px 22px 80px}h1,h2{font-family:Georgia,serif}h1{font-size:42px;color:#E8A060}h2{margin-top:34px;color:#E8A060}a{color:#E8A060}.box{padding:18px;border:1px solid rgba(232,160,96,.35);border-radius:16px;background:rgba(255,255,255,.04)}button{border:0;border-radius:999px;padding:11px 16px;background:#B8733A;color:#fff;font-weight:700;cursor:pointer}
+  </style>
+</head>
+<body><main>
+  <a href="/">← Voltar</a>
+  <h1>Política de Privacidade</h1>
+  <p>Esta página explica como os dados de navegação são usados para melhorar os conteúdos e os caminhos oferecidos por Margareth Almeida.</p>
+  <h2>O que é coletado</h2>
+  <p>Somente após sua autorização, registramos visitas, tempo ativo aproximado, profundidade de rolagem, links clicados, origem da visita, campanha, tipo de dispositivo, navegador e localização aproximada informada pela infraestrutura de hospedagem.</p>
+  <div class="box"><strong>Não armazenamos endereço IP, nome, e-mail, telefone ou localização exata neste sistema de métricas.</strong></div>
+  <h2>Para que usamos</h2>
+  <p>Os dados servem para entender quais conteúdos são mais úteis, identificar dificuldades de navegação e melhorar páginas, ofertas e chamadas para ação. Os registros técnicos são mantidos por até 180 dias.</p>
+  <h2>Como retirar a autorização</h2>
+  <p>Você pode apagar a preferência salva neste navegador e escolher novamente:</p>
+  <button id="reset" type="button">Redefinir preferência de métricas</button>
+  <p id="status" aria-live="polite"></p>
+  <script>document.getElementById('reset').onclick=()=>{localStorage.removeItem('ma_analytics_consent_v1');document.getElementById('status').textContent='Preferência apagada. Ao voltar à página inicial, você poderá escolher novamente.'}</script>
+</main></body>
+</html>
