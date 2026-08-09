@@ -1,9 +1,6 @@
 (() => {
   const PASSWORD_KEY = 'ma_dashboard_password';
-  const TOKEN_KEY = 'ma_dashboard_anon_token';
   const CACHE_PREFIX = 'ma_dashboard_data_';
-  const AUTH_URL = 'https://ep-square-credit-ayz2x9qc.neonauth.c-5.us-east-2.aws.neon.tech/neondb/auth';
-  const DATA_API_URL = 'https://ep-square-credit-ayz2x9qc.apirest.c-5.us-east-2.aws.neon.tech/neondb/rest/v1';
   const state = { password:sessionStorage.getItem(PASSWORD_KEY) || '', days:7, site:'all', data:null };
   const $ = (id) => document.getElementById(id);
   const siteNames = { linkhub:'Página de links', apostila_combo:'Combo de apostilas', all:'Todos os sites' };
@@ -27,27 +24,6 @@
     const controller=new AbortController();setTimeout(()=>controller.abort(),milliseconds);return controller.signal;
   }
 
-  let tokenPromise=null;
-  function anonymousToken() {
-    if(tokenPromise)return tokenPromise;
-    try{
-      const cached=JSON.parse(sessionStorage.getItem(TOKEN_KEY)||'null');
-      if(cached?.token&&Number(cached.expiresAt)>Math.floor(Date.now()/1000)+60)return Promise.resolve(cached.token);
-    }catch{}
-    tokenPromise=fetch(`${AUTH_URL}/token/anonymous`,{headers:{Accept:'application/json'},cache:'no-store',signal:timeoutSignal(8000)})
-      .then(async(response)=>{const data=await response.json().catch(()=>({}));if(!response.ok||!data.token)throw new Error('Falha na conexão segura.');sessionStorage.setItem(TOKEN_KEY,JSON.stringify({token:data.token,expiresAt:Number(data.expires_at||0)}));return data.token;})
-      .catch((error)=>{tokenPromise=null;throw error;});
-    return tokenPromise;
-  }
-
-  async function directRpc(name,body) {
-    const token=await anonymousToken();
-    const response=await fetch(`${DATA_API_URL}/rpc/${name}`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body),cache:'no-store',signal:timeoutSignal(12000)});
-    const data=await response.json().catch(()=>({}));
-    if(!response.ok){const error=new Error('rpc_failed');error.status=response.status;throw error;}
-    return data;
-  }
-
   async function sameOriginRpc(path,body) {
     let response;
     try{response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store',signal:timeoutSignal(22000)});}
@@ -59,13 +35,11 @@
 
   function dataCacheKey(){return `${CACHE_PREFIX}${state.days}_${state.site}`;}
   function cachedDashboard(){try{return JSON.parse(sessionStorage.getItem(dataCacheKey())||'null');}catch{return null;}}
-  function clearDashboardSession(){for(const key of Object.keys(sessionStorage))if(key===PASSWORD_KEY||key===TOKEN_KEY||key.startsWith(CACHE_PREFIX))sessionStorage.removeItem(key);}
+  function clearDashboardSession(){for(const key of Object.keys(sessionStorage))if(key===PASSWORD_KEY||key.startsWith(CACHE_PREFIX))sessionStorage.removeItem(key);}
+  function setLoading(visible){const overlay=$('loading');overlay.hidden=!visible;overlay.setAttribute('aria-hidden',String(!visible));}
 
-  let directReady=false;
-  directRpc('track_link_event',{payload:{}}).then(()=>true).catch(async()=>{
-    try{const response=await fetch('/api/warm',{method:'POST',cache:'no-store',signal:timeoutSignal(10000)});return response.status===204;}catch{return false;}
-  }).then((ready)=>{
-    directReady=ready;
+  setLoading(false);
+  fetch('/api/warm',{method:'POST',cache:'no-store',signal:timeoutSignal(10000)}).then((response)=>response.status===204).catch(()=>false).then((ready)=>{
     const status=$('connectionStatus');
     if(status){status.classList.toggle('ready',ready);status.lastChild.textContent=ready?' Conexão pronta':' Conexão será concluída ao entrar';}
   });
@@ -200,19 +174,9 @@
 
   async function load(showLoading=true) {
     if(!state.password)return;
-    if(showLoading)$('loading').hidden=false;
+    if(showLoading)setLoading(true);
     try{
-      let data;
-      if(directReady){
-        try{
-          data=await directRpc('get_link_dashboard',{p_password:state.password,p_days:state.days,p_site:state.site});
-        }catch(error){
-          if(error.status===401||error.status===403)throw new Error('Senha incorreta.');
-          data=await sameOriginRpc('/api/dashboard',{password:state.password,days:state.days,site:state.site});
-        }
-      }else{
-        data=await sameOriginRpc('/api/dashboard',{password:state.password,days:state.days,site:state.site});
-      }
+      const data=await sameOriginRpc('/api/dashboard',{password:state.password,days:state.days,site:state.site});
       sessionStorage.setItem(PASSWORD_KEY,state.password);
       sessionStorage.setItem(dataCacheKey(),JSON.stringify(data));
       $('login').hidden=true;$('app').hidden=false;$('loginError').textContent='';
@@ -222,24 +186,14 @@
       if(error.status===401||error.status===403||error.message==='Senha incorreta.'){clearDashboardSession();state.password='';}
       $('app').hidden=true;$('login').hidden=false;
       $('loginError').textContent=error.message||'Senha incorreta.';
-    }finally{$('loading').hidden=true;}
+    }finally{setLoading(false);}
   }
 
   async function openJourney(sessionId) {
     const modal=$('journeyModal'),content=$('journeyContent');
     content.innerHTML='<div class="journey"><h2>Carregando jornada...</h2></div>';modal.showModal();
     try{
-      let data;
-      if(directReady){
-        try{
-          data=await directRpc('get_link_journey',{p_password:state.password,p_session_id:sessionId});
-        }catch(error){
-          if(error.status===401||error.status===403)throw new Error('Não foi possível abrir esta jornada.');
-          data=await sameOriginRpc('/api/journey',{password:state.password,sessionId});
-        }
-      }else{
-        data=await sameOriginRpc('/api/journey',{password:state.password,sessionId});
-      }
+      const data=await sameOriginRpc('/api/journey',{password:state.password,sessionId});
       const sessions=data.sessions||[],events=data.events||[],root=sessions[0]||{};
       content.innerHTML=`<div class="journey"><p class="eyebrow">JORNADA COMPLETA</p><h2>${esc(root.source||'Visita direta')} · ${esc(root.city||'Local não identificado')}</h2><div class="journey-summary"><div><small>Início</small><strong>${when(root.started_at)}</strong></div><div><small>Sites visitados</small><strong>${number(sessions.length)}</strong></div><div><small>Tempo ativo</small><strong>${duration(sessions.reduce((sum,i)=>sum+n(i.engaged_seconds),0))}</strong></div><div><small>Resultado</small><strong>${sessions.some((i)=>i.converted)?'Compra confirmada':'Sem compra'}</strong></div></div><div class="event-list">${events.map((event)=>`<article class="event"><strong>${esc(eventNames[event.event_name]||event.event_name)} · ${esc(siteNames[event.site_id]||event.site_id)}</strong><p>${esc(event.link_label||event.product_name||event.target_url||event.path||'')}</p><time>${when(event.occurred_at)}${event.value_cents?` · ${money(event.value_cents)}`:''}</time></article>`).join('')||'<p>Nenhum evento encontrado.</p>'}</div></div>`;
     }catch(error){content.innerHTML=`<div class="journey"><h2>Não foi possível abrir</h2><p>${esc(error.message)}</p></div>`;}
