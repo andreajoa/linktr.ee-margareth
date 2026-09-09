@@ -1,0 +1,53 @@
+/* Product cover correction — show the complete artwork instead of cropping it. */
+.products .product-media{
+  height:360px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(255,255,255,.96),rgba(248,236,228,.88) 68%,rgba(238,218,205,.78));
+}
+
+.products .product-media img{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain !important;
+  object-position:center center !important;
+  border-radius:10px;
+  box-shadow:0 12px 28px rgba(18,43,67,.14);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+
+.products .product-card:hover .product-media img{
+  transform:translateY(-3px) scale(1.01);
+  box-shadow:0 17px 34px rgba(18,43,67,.18);
+}
+
+.products .tag{
+  z-index:3;
+}
+
+@media (max-width:850px){
+  .products .product-media{
+    height:330px;
+    padding:16px;
+  }
+}
+
+@media (max-width:560px){
+  .products .product-media{
+    height:320px;
+    padding:14px;
+  }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .products .product-card:hover .product-media img{
+    transform:none;
+  }
+}
