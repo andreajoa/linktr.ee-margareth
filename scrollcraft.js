@@ -10,9 +10,9 @@
     const toggle = document.getElementById('menuToggle');
     const nav = document.getElementById('mainNav');
 
-    /* Homepage visual fixes: keep the logo fully visible and use the real book cover. */
+    /* Homepage visual fixes: keep the logo fully visible and render the real book as a 3D object. */
     const fixStyle = document.createElement('style');
-    fixStyle.dataset.homepageFix = '20260909';
+    fixStyle.dataset.homepageFix = '20260909-v2';
     fixStyle.textContent = `
       .site-header{
         min-height:96px!important;
@@ -36,47 +36,127 @@
         margin-top:5px!important;
         line-height:1.35!important;
       }
+
+      .book-stage{
+        perspective:1100px!important;
+        perspective-origin:50% 42%!important;
+        overflow:visible!important;
+        min-height:325px!important;
+      }
+      .book-stage::after{
+        width:240px!important;
+        height:38px!important;
+        bottom:4px!important;
+        background:rgba(59,31,18,.24)!important;
+        filter:blur(17px)!important;
+        transform:translateX(12px) rotate(-2deg)!important;
+      }
       .book-cover-art.real-cover-mode{
-        width:205px!important;
-        height:301px!important;
+        position:relative!important;
+        width:218px!important;
+        height:320px!important;
         padding:0!important;
         background:none!important;
         border:0!important;
-        border-radius:4px 9px 9px 4px!important;
+        border-radius:4px 8px 8px 4px!important;
         box-shadow:none!important;
         overflow:visible!important;
+        transform-style:preserve-3d!important;
+        transform:rotateY(-13deg) rotateX(2.5deg) rotateZ(.4deg)!important;
+        transform-origin:48% 70%!important;
+        animation:bookFloat3d 5.8s ease-in-out infinite!important;
+        isolation:isolate!important;
       }
-      .book-cover-art.real-cover-mode::before{display:none!important}
+      .book-cover-art.real-cover-mode::before{
+        content:''!important;
+        display:block!important;
+        position:absolute!important;
+        z-index:-2!important;
+        top:5px!important;
+        right:-13px!important;
+        bottom:5px!important;
+        width:15px!important;
+        border-radius:0 5px 5px 0!important;
+        background:
+          repeating-linear-gradient(0deg,rgba(118,86,44,.20) 0 1px,rgba(255,244,208,.95) 1px 3px),
+          linear-gradient(90deg,#d7b875,#fff4d6 62%,#b8833f)!important;
+        transform:rotateY(76deg)!important;
+        transform-origin:left center!important;
+        box-shadow:4px 2px 10px rgba(67,39,19,.16)!important;
+      }
       .book-cover-art.real-cover-mode::after{
-        content:'';
-        position:absolute;
-        z-index:-1;
-        top:7px;
-        right:-10px;
-        bottom:7px;
-        width:12px;
-        border-radius:0 6px 6px 0;
-        background:linear-gradient(90deg,#e8c991,#fff2cf 58%,#c9985c);
-        box-shadow:3px 5px 10px rgba(75,45,23,.18);
+        content:''!important;
+        position:absolute!important;
+        z-index:-2!important;
+        left:8px!important;
+        right:-7px!important;
+        bottom:-11px!important;
+        height:12px!important;
+        border-radius:0 0 5px 4px!important;
+        background:
+          repeating-linear-gradient(90deg,rgba(113,80,40,.15) 0 1px,rgba(255,245,215,.96) 1px 4px),
+          #f4dfac!important;
+        transform:rotateX(-78deg)!important;
+        transform-origin:top center!important;
+        box-shadow:0 5px 8px rgba(56,29,16,.12)!important;
+      }
+      .book-cover-art.real-cover-mode .book-spine{
+        position:absolute!important;
+        z-index:-1!important;
+        left:-12px!important;
+        top:3px!important;
+        bottom:3px!important;
+        width:14px!important;
+        border-radius:4px 0 0 4px!important;
+        background:linear-gradient(90deg,#8d5b22,#c99a4f 45%,#744516)!important;
+        transform:rotateY(-72deg)!important;
+        transform-origin:right center!important;
+        box-shadow:-4px 2px 10px rgba(61,33,16,.20)!important;
       }
       .book-cover-art.real-cover-mode img.real-book-cover{
-        display:block;
+        position:relative!important;
+        z-index:3!important;
+        display:block!important;
         width:100%!important;
         height:100%!important;
         object-fit:cover!important;
-        object-position:left center!important;
-        border-radius:4px 9px 9px 4px!important;
-        border:1px solid rgba(98,61,29,.18)!important;
-        box-shadow:-8px 8px 0 #e4c589,0 26px 36px rgba(62,32,19,.30)!important;
+        object-position:center center!important;
+        border-radius:4px 8px 8px 4px!important;
+        border:1px solid rgba(91,55,25,.22)!important;
+        box-shadow:
+          -8px 13px 18px rgba(74,43,22,.16),
+          0 28px 42px rgba(62,32,19,.31),
+          inset -8px 0 10px rgba(44,25,15,.07)!important;
+        backface-visibility:hidden!important;
       }
+      .book-cover-art.real-cover-mode img.real-book-cover::selection{background:transparent}
+      .book-spotlight:hover .book-cover-art.real-cover-mode{
+        transform:rotateY(-9deg) rotateX(1deg) rotateZ(0deg) translateY(-4px)!important;
+      }
+      @keyframes bookFloat3d{
+        0%,100%{transform:rotateY(-13deg) rotateX(2.5deg) rotateZ(.4deg) translateY(0)}
+        50%{transform:rotateY(-10deg) rotateX(1.5deg) rotateZ(-.2deg) translateY(-10px)}
+      }
+
       @media(max-width:850px){
         .site-header{min-height:82px!important;padding:11px 0 10px!important}
         .brand{padding:4px 0!important}
         .brand-name{font-size:27px!important;line-height:1.12!important}
         .brand-role{margin-top:4px!important}
+        .book-stage{min-height:300px!important}
+        .book-cover-art.real-cover-mode{width:194px!important;height:285px!important;transform:rotateY(-10deg) rotateX(2deg)!important}
+      }
+      @media(prefers-reduced-motion:reduce){
+        .book-cover-art.real-cover-mode{animation:none!important;transform:rotateY(-10deg) rotateX(2deg)!important}
       }
     `;
     document.head.appendChild(fixStyle);
+
+    const bookSpotlight = document.querySelector('.book-spotlight');
+    if (bookSpotlight) {
+      bookSpotlight.href = 'https://www.amazon.com.br/Dois-Iguais-Segredo-Cora%C3%A7%C3%A3o-identidade/dp/B0H9GKJN2X/ref=tmm_pap_swatch_0';
+      bookSpotlight.setAttribute('aria-label', 'Conhecer o livro Os Dois Iguais e o Segredo do Coração na Amazon');
+    }
 
     const coverArt = document.querySelector('.book-cover-art');
     if (coverArt) {
@@ -89,7 +169,7 @@
           const clean = base64.trim();
           if (!clean) return;
           coverArt.classList.add('real-cover-mode');
-          coverArt.innerHTML = `<img class="real-book-cover" src="data:image/jpeg;base64,${clean}" alt="Capa real do livro Os Dois Iguais e o Segredo do Coração">`;
+          coverArt.innerHTML = `<span class="book-spine" aria-hidden="true"></span><img class="real-book-cover" src="data:image/jpeg;base64,${clean}" alt="Capa real do livro Os Dois Iguais e o Segredo do Coração">`;
         })
         .catch(() => undefined);
     }
