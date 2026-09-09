@@ -1,6 +1,6 @@
 (() => {
   const ready = (fn) => document.readyState === 'loading'
-    ? document.addEventListener('DOMContentLoaded', fn, { once:true })
+    ? document.addEventListener('DOMContentLoaded', fn, { once: true })
     : fn();
 
   ready(() => {
@@ -10,18 +10,11 @@
     const toggle = document.getElementById('menuToggle');
     const nav = document.getElementById('mainNav');
 
-    /* Force-load the current visual corrections, bypassing stale browser/CDN cache. */
-    if (!document.querySelector('link[data-homepage-fixes]')) {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = '/product-covers-fix.css?v=20260909-4';
-      link.dataset.homepageFixes = 'true';
-      document.head.appendChild(link);
-    }
+    const style = document.createElement('style');
+    style.dataset.homepageFix = '20260909-v5-3d-assets';
+    style.textContent = `
+      html,body{max-width:100%;overflow-x:hidden!important}
 
-    const fixStyle = document.createElement('style');
-    fixStyle.dataset.homepageFix = '20260909-v4';
-    fixStyle.textContent = `
       .site-header{
         min-height:96px!important;
         padding:14px 0 13px!important;
@@ -42,15 +35,55 @@
       .brand-name em{line-height:1.1!important}
       .brand-role{margin-top:5px!important;line-height:1.35!important}
 
-      /* Product cards: complete artwork, no crop. */
+      /* Real 3D book asset in the hero. */
+      .book-stage{
+        min-height:330px!important;
+        display:flex!important;
+        align-items:flex-end!important;
+        justify-content:center!important;
+        overflow:visible!important;
+      }
+      .book-stage::after{display:none!important}
+      .book-cover-art.real-cover-mode{
+        width:min(100%,275px)!important;
+        height:auto!important;
+        padding:0!important;
+        margin:0 auto!important;
+        display:block!important;
+        overflow:visible!important;
+        background:none!important;
+        border:0!important;
+        border-radius:0!important;
+        box-shadow:none!important;
+        animation:none!important;
+      }
+      .book-cover-art.real-cover-mode::before,
+      .book-cover-art.real-cover-mode::after{display:none!important}
+      .hero-book-3d{
+        display:block!important;
+        width:100%!important;
+        height:auto!important;
+        max-height:330px!important;
+        object-fit:contain!important;
+        object-position:center bottom!important;
+        filter:drop-shadow(0 22px 24px rgba(63,32,19,.27))!important;
+        transform-origin:50% 85%!important;
+        animation:bookAssetFloat 5.8s ease-in-out infinite!important;
+      }
+      @keyframes bookAssetFloat{
+        0%,100%{transform:translateY(0) rotate(-.25deg)}
+        50%{transform:translateY(-9px) rotate(.35deg)}
+      }
+
+      /* Product artwork: full object, never cropped. */
       .products .product-media{
-        height:360px!important;
+        height:370px!important;
         display:flex!important;
         align-items:center!important;
         justify-content:center!important;
-        padding:18px!important;
+        padding:22px!important;
         overflow:hidden!important;
-        background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.98),rgba(248,236,228,.9) 68%,rgba(238,218,205,.8))!important;
+        background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.99),rgba(248,236,228,.92) 66%,rgba(238,218,205,.82))!important;
       }
       .products .product-media img{
         display:block!important;
@@ -60,121 +93,36 @@
         max-height:100%!important;
         object-fit:contain!important;
         object-position:center!important;
-        border-radius:10px!important;
-        box-shadow:0 12px 28px rgba(18,43,67,.14)!important;
         transform:none!important;
       }
-      .products .product-card:hover .product-media img{
-        transform:translateY(-3px) scale(1.01)!important;
-      }
-      .products .tag{z-index:3!important}
-
-      /* Real book cover rendered as a physical 3D book. */
-      .book-stage{
-        perspective:1100px!important;
-        perspective-origin:50% 42%!important;
-        overflow:visible!important;
-        min-height:325px!important;
-      }
-      .book-stage::after{
-        width:240px!important;
-        height:38px!important;
-        bottom:4px!important;
-        background:rgba(59,31,18,.24)!important;
-        filter:blur(17px)!important;
-        transform:translateX(12px) rotate(-2deg)!important;
-      }
-      .book-cover-art.real-cover-mode{
-        position:relative!important;
-        width:218px!important;
-        height:320px!important;
-        padding:0!important;
-        background:none!important;
-        border:0!important;
-        border-radius:4px 8px 8px 4px!important;
+      .products .product-media img.product-asset-3d{
+        width:auto!important;
+        max-width:94%!important;
+        max-height:96%!important;
+        border-radius:0!important;
         box-shadow:none!important;
-        overflow:visible!important;
-        transform-style:preserve-3d!important;
-        transform:rotateY(-13deg) rotateX(2.5deg) rotateZ(.4deg)!important;
-        transform-origin:48% 70%!important;
-        animation:bookFloat3d 5.8s ease-in-out infinite!important;
-        isolation:isolate!important;
+        filter:drop-shadow(0 16px 18px rgba(18,43,67,.22))!important;
       }
-      .book-cover-art.real-cover-mode::before{
-        content:''!important;
-        display:block!important;
-        position:absolute!important;
-        z-index:-2!important;
-        top:5px!important;
-        right:-13px!important;
-        bottom:5px!important;
-        width:15px!important;
-        border-radius:0 5px 5px 0!important;
-        background:repeating-linear-gradient(0deg,rgba(118,86,44,.20) 0 1px,rgba(255,244,208,.95) 1px 3px),linear-gradient(90deg,#d7b875,#fff4d6 62%,#b8833f)!important;
-        transform:rotateY(76deg)!important;
-        transform-origin:left center!important;
-        box-shadow:4px 2px 10px rgba(67,39,19,.16)!important;
+      .products .product-card:hover .product-media img.product-asset-3d{
+        transform:translateY(-4px) scale(1.015)!important;
       }
-      .book-cover-art.real-cover-mode::after{
-        content:''!important;
-        position:absolute!important;
-        z-index:-2!important;
-        left:8px!important;
-        right:-7px!important;
-        bottom:-11px!important;
-        height:12px!important;
-        border-radius:0 0 5px 4px!important;
-        background:repeating-linear-gradient(90deg,rgba(113,80,40,.15) 0 1px,rgba(255,245,215,.96) 1px 4px),#f4dfac!important;
-        transform:rotateX(-78deg)!important;
-        transform-origin:top center!important;
-      }
-      .book-cover-art.real-cover-mode .book-spine{
-        position:absolute!important;
-        z-index:-1!important;
-        left:-12px!important;
-        top:3px!important;
-        bottom:3px!important;
-        width:14px!important;
-        border-radius:4px 0 0 4px!important;
-        background:linear-gradient(90deg,#8d5b22,#c99a4f 45%,#744516)!important;
-        transform:rotateY(-72deg)!important;
-        transform-origin:right center!important;
-      }
-      .book-cover-art.real-cover-mode img.real-book-cover{
-        position:relative!important;
-        z-index:3!important;
-        display:block!important;
-        width:100%!important;
-        height:100%!important;
-        object-fit:cover!important;
-        object-position:center!important;
-        border-radius:4px 8px 8px 4px!important;
-        border:1px solid rgba(91,55,25,.22)!important;
-        box-shadow:-8px 13px 18px rgba(74,43,22,.16),0 28px 42px rgba(62,32,19,.31)!important;
-        backface-visibility:hidden!important;
-      }
-      .book-spotlight:hover .book-cover-art.real-cover-mode{
-        transform:rotateY(-9deg) rotateX(1deg) rotateZ(0) translateY(-4px)!important;
-      }
-      @keyframes bookFloat3d{
-        0%,100%{transform:rotateY(-13deg) rotateX(2.5deg) rotateZ(.4deg) translateY(0)}
-        50%{transform:rotateY(-10deg) rotateX(1.5deg) rotateZ(-.2deg) translateY(-10px)}
-      }
+      .products .tag{z-index:4!important}
 
-      /* Mobile art direction: no clipping, no horizontal overflow. */
       @media(max-width:850px){
-        html,body{max-width:100%;overflow-x:hidden!important}
         .site-header{min-height:82px!important;padding:11px 0 10px!important}
         .brand{padding:4px 0!important;max-width:calc(100vw - 92px)}
         .brand-name{font-size:27px!important;line-height:1.12!important;white-space:nowrap}
         .brand-role{margin-top:4px!important}
         .hero-copy,.hero-person,.book-spotlight,.caa-card,.mission,.resource-hub{max-width:100%!important}
         .hero-copy h1,.section-heading h2,.specialty-heading h2{overflow-wrap:anywhere}
-        .book-spotlight{overflow:visible!important}
-        .book-stage{min-height:300px!important;overflow:visible!important}
-        .book-cover-art.real-cover-mode{width:194px!important;height:285px!important;transform:rotateY(-10deg) rotateX(2deg)!important}
-        .products .product-media{height:330px!important;padding:16px!important}
-        .products .product-media img{max-width:100%!important;max-height:100%!important}
+        .book-spotlight{overflow:hidden!important}
+        .book-stage{min-height:300px!important}
+        .book-cover-art.real-cover-mode{width:min(72vw,245px)!important}
+        .hero-book-3d{max-height:300px!important}
+        .product-grid{grid-template-columns:1fr!important;gap:18px!important}
+        .product-card{width:100%!important;min-width:0!important}
+        .products .product-media{height:390px!important;padding:24px!important}
+        .products .product-media img.product-asset-3d{max-width:min(88%,340px)!important;max-height:100%!important}
         .product-body,.price-row{min-width:0!important}
         .price-row{flex-wrap:wrap!important}
       }
@@ -182,6 +130,7 @@
       @media(max-width:560px){
         .site-header{width:calc(100% - 28px)!important}
         .brand-name{font-size:24px!important}
+        .welcome-strip{padding-inline:12px!important;text-align:center}
         .welcome-strip p{max-width:94vw}
         .hero{gap:14px!important}
         .hero-copy{padding:34px 22px!important}
@@ -190,19 +139,21 @@
         .hero-body{font-size:11px!important}
         .social-row{gap:6px!important}
         .social-row a{font-size:8px!important}
-        .book-spotlight{grid-template-columns:1fr!important;padding:26px 22px!important;overflow:visible!important}
+        .book-spotlight{grid-template-columns:1fr!important;padding:26px 22px!important}
         .book-copy h2{font-size:34px!important}
-        .book-stage{min-height:292px!important;margin-top:4px!important}
-        .book-cover-art.real-cover-mode{width:176px!important;height:259px!important}
+        .book-stage{min-height:278px!important;margin-top:8px!important}
+        .book-cover-art.real-cover-mode{width:min(72vw,220px)!important}
+        .hero-book-3d{max-height:278px!important}
         .products{padding:30px 14px!important}
         .section-heading h2{font-size:39px!important;line-height:.96!important}
-        .product-grid{grid-template-columns:repeat(3,minmax(82vw,82vw))!important;gap:12px!important}
-        .product-card{min-height:0!important}
-        .products .product-media{height:310px!important;padding:14px!important}
+        .product-grid{display:grid!important;grid-template-columns:1fr!important;gap:16px!important;overflow:visible!important}
+        .product-card{width:100%!important;min-width:0!important;min-height:0!important}
+        .products .product-media{height:340px!important;padding:18px!important}
+        .products .product-media img.product-asset-3d{max-width:min(90%,300px)!important;max-height:100%!important}
         .product-body{padding:20px 17px!important}
         .product-body h3{font-size:28px!important}
         .product-body p{min-height:0!important;font-size:10px!important}
-        .price-row{margin-top:16px!important;align-items:flex-start!important}
+        .price-row{margin-top:16px!important;align-items:flex-start!important;gap:10px!important}
         .price-row strong{font-size:27px!important}
         .price-row span{font-size:7px!important;white-space:normal!important;text-align:center!important}
         .resource-grid{grid-template-columns:1fr!important}
@@ -213,11 +164,19 @@
       }
 
       @media(prefers-reduced-motion:reduce){
-        .products .product-card:hover .product-media img{transform:none!important}
-        .book-cover-art.real-cover-mode{animation:none!important;transform:rotateY(-10deg) rotateX(2deg)!important}
+        .hero-book-3d{animation:none!important}
+        .products .product-card:hover .product-media img.product-asset-3d{transform:none!important}
       }
     `;
-    document.head.appendChild(fixStyle);
+    document.head.appendChild(style);
+
+    const loadBase64Image = async (path, mime = 'image/webp') => {
+      const response = await fetch(`${path}?v=20260909-5`, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Asset unavailable: ${path}`);
+      const base64 = (await response.text()).trim();
+      if (!base64) throw new Error(`Empty asset: ${path}`);
+      return `data:${mime};base64,${base64}`;
+    };
 
     const bookSpotlight = document.querySelector('.book-spotlight');
     if (bookSpotlight) {
@@ -227,28 +186,54 @@
 
     const coverArt = document.querySelector('.book-cover-art');
     if (coverArt) {
-      fetch('/image/os-dois-iguais-cover.b64?v=20260909-2', { cache:'no-store' })
-        .then(response => {
-          if (!response.ok) throw new Error('book cover asset unavailable');
-          return response.text();
-        })
-        .then(base64 => {
-          const clean = base64.trim();
-          if (!clean) return;
+      loadBase64Image('/image/os-dois-iguais-3d.webp.b64')
+        .then(src => {
           coverArt.classList.add('real-cover-mode');
-          coverArt.innerHTML = `<span class="book-spine" aria-hidden="true"></span><img class="real-book-cover" src="data:image/jpeg;base64,${clean}" alt="Capa real do livro Os Dois Iguais e o Segredo do Coração">`;
+          coverArt.removeAttribute('aria-hidden');
+          coverArt.innerHTML = `<img class="hero-book-3d" src="${src}" alt="Livro Os Dois Iguais e o Segredo do Coração em mockup 3D">`;
         })
-        .catch(() => undefined);
+        .catch(() => {
+          /* Keep the existing illustrated fallback if the asset cannot be loaded. */
+        });
     }
+
+    const productCards = [...document.querySelectorAll('.product-card')];
+    const replaceProductAsset = (title, path, alt) => {
+      const card = productCards.find(item => item.querySelector('h3')?.textContent.trim() === title);
+      const image = card?.querySelector('.product-media img');
+      if (!image) return;
+      loadBase64Image(path)
+        .then(src => {
+          image.src = src;
+          image.alt = alt;
+          image.classList.add('product-asset-3d');
+          image.removeAttribute('width');
+          image.removeAttribute('height');
+        })
+        .catch(() => {
+          /* Preserve the current cover as a safe fallback. */
+        });
+    };
+
+    replaceProductAsset(
+      'Não Era Falta de Amor',
+      '/image/nao-era-falta-de-amor-3d.webp.b64',
+      'Não Era Falta de Amor em mockup 3D'
+    );
+    replaceProductAsset(
+      'Descubra os Sentidos',
+      '/image/descubra-os-sentidos-3d.webp.b64',
+      'Descubra os Sentidos em mockup 3D'
+    );
 
     const syncScroll = () => {
       const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
       const pct = Math.min(100, Math.max(0, scrollY / max * 100));
-      if (progress) progress.style.height = pct + '%';
+      if (progress) progress.style.height = `${pct}%`;
       header?.classList.toggle('scrolled', scrollY > 16);
     };
     syncScroll();
-    addEventListener('scroll', syncScroll, { passive:true });
+    addEventListener('scroll', syncScroll, { passive: true });
 
     if (toggle && nav) {
       const closeMenu = () => {
@@ -278,7 +263,7 @@
             io.unobserve(entry.target);
           }
         });
-      }, { threshold:.12, rootMargin:'0px 0px -6% 0px' });
+      }, { threshold: .12, rootMargin: '0px 0px -6% 0px' });
       revealEls.forEach(el => io.observe(el));
     }
 
@@ -291,7 +276,7 @@
           const y = (e.clientY - r.top) / r.height - .5;
           card.style.transform = `perspective(900px) rotateY(${x * strength}deg) rotateX(${-y * strength}deg) translateY(-4px)`;
         });
-        card.addEventListener('pointerleave', () => card.style.transform = '');
+        card.addEventListener('pointerleave', () => { card.style.transform = ''; });
       });
 
       document.querySelectorAll('.magnetic').forEach(el => {
@@ -301,7 +286,7 @@
           const y = (e.clientY - r.top - r.height / 2) / r.height;
           el.style.transform = `translate(${x * 5}px,${y * 5}px)`;
         });
-        el.addEventListener('pointerleave', () => el.style.transform = '');
+        el.addEventListener('pointerleave', () => { el.style.transform = ''; });
       });
 
       const depthEls = [...document.querySelectorAll('[data-depth]')];
@@ -316,7 +301,7 @@
             el.style.translate = `${nx * 10 * d}px ${ny * 10 * d}px`;
           });
         });
-      }, { passive:true });
+      }, { passive: true });
     }
 
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -326,7 +311,7 @@
         const target = document.querySelector(id);
         if (!target) return;
         e.preventDefault();
-        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block:'start' });
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
       });
     });
   });
