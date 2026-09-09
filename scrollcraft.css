@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root{
+  --sc-navy:#09274B;
+  --sc-navy-deep:#071B31;
+  --sc-navy-mid:#0D355E;
+  --sc-cream:#FFF8F3;
+  --sc-cream-2:#F3DED0;
+  --sc-blush:#F7E9E0;
+  --sc-terracotta:#A64B2A;
+  --sc-copper:#C88664;
+  --sc-gold:#E8A060;
+  --sc-ink:#11263C;
+  --sc-muted:#667383;
+  --sc-serif:'Cormorant Garamond',Georgia,serif;
+  --sc-sans:'Montserrat',Arial,sans-serif;
+  --sc-shadow:0 28px 72px rgba(4,19,36,.2);
+  --sc-soft-shadow:0 16px 44px rgba(4,19,36,.12);
+}
+
+html{scroll-behavior:smooth!important;scroll-padding-top:90px!important;background:var(--sc-navy-deep)!important}
+body.scrollcraft-v2{
+  cursor:auto!important;
+  font-family:var(--sc-sans)!important;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(200,134,100,.16),transparent 30rem),
+    radial-gradient(circle at 92% 18%,rgba(44,94,137,.2),transparent 34rem),
+    var(--sc-navy-deep)!important;
+  color:var(--sc-cream)!important;
+}
+body.scrollcraft-v2 .cursor,
+body.scrollcraft-v2 .cursor-ring{display:none!important}
+body.scrollcraft-v2 a,body.scrollcraft-v2 button{cursor:pointer!important}
+body.scrollcraft-v2 *{box-sizing:border-box}
+body.scrollcraft-v2 :focus-visible{outline:3px solid var(--sc-gold)!important;outline-offset:4px!important}
+
+/* keep old ambient system but make it editorial */
+body.scrollcraft-v2 .grain{opacity:.022!important}
+body.scrollcraft-v2 .grid-lines{opacity:.45!important;background-size:72px 72px!important}
+body.scrollcraft-v2 .blob{filter:blur(105px)!important;opacity:.12!important}
+body.scrollcraft-v2 .particles{opacity:.42!important}
+
+body.scrollcraft-v2 .welcome-bar{
+  padding:10px 20px!important;
+  min-height:42px!important;
+  background:linear-gradient(90deg,rgba(200,134,100,.18),rgba(255,248,243,.075),rgba(200,134,100,.15))!important;
+  border-bottom:1px solid rgba(232,160,96,.2)!important;
+}
+body.scrollcraft-v2 .welcome-bar p{
+  font-family:var(--sc-serif)!important;
+  font-size:15px!important;
+  letter-spacing:.1px!important;
+}
+body.scrollcraft-v2 .welcome-bar .hl{color:var(--sc-gold)!important}
+
+body.scrollcraft-v2 .wrap{
+  position:relative!important;
+  z-index:10!important;
+  width:min(1180px,calc(100vw - 40px))!important;
+  max-width:none!important;
+  margin:0 auto!important;
+  padding:42px 0 90px!important;
+}
+
+/* Hero grammar: recognition -> trust -> featured story */
+.sc-hero-stage{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(320px,.72fr);
+  gap:22px;
+  align-items:stretch;
+  margin-bottom:26px;
+}
+.sc-hero-stage::before,
+.sc-hero-stage::after{
+  content:'';
+  position:absolute;
+  pointer-events:none;
+  z-index:-1;
+}
+.sc-hero-stage::before{
+  width:260px;height:260px;left:-100px;top:100px;border-radius:50%;
+  border:1px solid rgba(232,160,96,.12);
+  box-shadow:0 0 0 45px rgba(232,160,96,.025),0 0 0 88px rgba(232,160,96,.018);
+}
+.sc-hero-stage::after{
+  width:34px;height:94px;right:-25px;bottom:86px;border:1px solid rgba(232,160,96,.42);
+  border-radius:100% 0 100% 0;transform:rotate(28deg);
+  animation:scLeaf 5s ease-in-out infinite alternate;
+}
+@keyframes scLeaf{to{transform:rotate(38deg) translateY(-7px)}}
+
+body.scrollcraft-v2 .hero{
+  min-height:590px!important;
+  padding:42px!important;
+  margin:0!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.08fr) minmax(260px,.78fr)!important;
+  gap:30px!important;
+  text-align:left!important;
+  align-items:center!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:34px!important;
+  background:
+    linear-gradient(135deg,rgba(9,39,75,.95),rgba(9,39,75,.74)),
+    radial-gradient(circle at 70% 16%,rgba(200,134,100,.23),transparent 35%)!important;
+  box-shadow:var(--sc-shadow)!important;
+  overflow:hidden!important;
+  position:relative!important;
+}
+body.scrollcraft-v2 .hero::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.035) 50%,transparent 63%);
+  transform:translateX(-100%);animation:scHeroSweep 9s ease-in-out infinite;
+}
+@keyframes scHeroSweep{0%,55%{transform:translateX(-110%)}75%,100%{transform:translateX(110%)}}
+.sc-intro{position:relative;z-index:3}
+.sc-kicker{
+  color:var(--sc-copper);font:700 10px/1.3 var(--sc-sans);letter-spacing:2.8px;text-transform:uppercase;
+  margin-bottom:14px;
+}
+.sc-intro h1{
+  font:700 clamp(52px,5.7vw,83px)/.88 var(--sc-serif)!important;
+  letter-spacing:-.04em!important;color:var(--sc-cream)!important;
+  margin:0 0 22px!important;max-width:540px!important;
+}
+.sc-intro h1 em{display:block;color:var(--sc-gold);font-style:italic}
+.sc-intro p{max-width:570px;color:rgba(255,248,243,.76);font-size:14px;line-height:1.68;margin-bottom:26px}
+.sc-actions{display:flex;gap:10px;flex-wrap:wrap}
+.sc-btn{
+  min-height:48px;display:inline-flex;align-items:center;justify-content:center;padding:12px 20px;border-radius:999px;
+  text-decoration:none;font:700 10px/1 var(--sc-sans);letter-spacing:.7px;text-transform:uppercase;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+}
+.sc-btn:hover{transform:translateY(-3px)}
+.sc-btn-primary{background:linear-gradient(135deg,var(--sc-terracotta),#D96C47);color:#fff;box-shadow:0 12px 30px rgba(166,75,42,.3)}
+.sc-btn-ghost{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.045);color:#fff}
+
+.sc-profile{
+  position:relative;z-index:4;display:flex;flex-direction:column;align-items:center;text-align:center;
+  padding-top:8px;
+}
+body.scrollcraft-v2 .photo-frame{margin:0 0 18px!important;transition:translate .25s ease}
+body.scrollcraft-v2 .photo-ring{
+  width:184px!important;height:184px!important;padding:4px!important;
+  box-shadow:0 0 0 8px rgba(255,255,255,.035),0 18px 60px rgba(0,0,0,.25),0 0 46px rgba(232,160,96,.2)!important;
+}
+body.scrollcraft-v2 .photo-inner img{object-fit:cover!important}
+body.scrollcraft-v2 .live-badge{right:8px!important;bottom:5px!important;padding:6px 13px!important}
+body.scrollcraft-v2 .hero-eyebrow{font-size:8px!important;letter-spacing:3px!important;margin-bottom:7px!important}
+body.scrollcraft-v2 .hero-name{
+  font-family:var(--sc-serif)!important;font-size:42px!important;line-height:.85!important;margin-bottom:8px!important;text-align:center!important;
+}
+body.scrollcraft-v2 .hero-name em{color:var(--sc-gold)!important;background:none!important;-webkit-text-fill-color:initial!important}
+body.scrollcraft-v2 .hero-role{font-size:8px!important;letter-spacing:1.7px!important;margin-bottom:11px!important}
+body.scrollcraft-v2 .hero-tagline{font-family:var(--sc-serif)!important;font-size:14px!important;line-height:1.35!important;margin:0 auto 12px!important;max-width:250px!important}
+body.scrollcraft-v2 .rule{height:24px!important;margin:0 auto 10px!important}
+body.scrollcraft-v2 .socials{gap:7px!important}
+body.scrollcraft-v2 .soc{font-size:8px!important;padding:7px 11px!important;border-color:rgba(255,255,255,.15)!important}
+
+/* existing real book promo becomes the editorial side spotlight */
+body.scrollcraft-v2 .book-promo{
+  margin:0!important;width:100%!important;height:auto!important;aspect-ratio:auto!important;min-height:590px!important;
+  border-radius:34px!important;border:1px solid rgba(232,160,96,.28)!important;
+  background:linear-gradient(155deg,#FFF3E9,#EFCFBF)!important;
+  box-shadow:var(--sc-shadow)!important;transition:translate .25s ease!important;
+  overflow:hidden!important;animation:none!important;opacity:1!important;
+}
+body.scrollcraft-v2 .book-promo-slide img{object-fit:cover!important}
+body.scrollcraft-v2 .book-promo-nav{
+  bottom:16px!important;background:rgba(7,27,49,.82)!important;border-color:rgba(255,255,255,.15)!important;
+}
+
+/* Free tool: relief / immediate value */
+body.scrollcraft-v2 .caa-feature{
+  margin:0 0 28px!important;padding:34px 40px!important;min-height:310px!important;
+  border-radius:32px!important;
+  background:
+    radial-gradient(circle at 7% 0,rgba(81,184,138,.31),transparent 38%),
+    linear-gradient(135deg,rgba(20,72,70,.96),rgba(9,39,75,.96))!important;
+  border:1px solid rgba(81,184,138,.46)!important;
+  box-shadow:var(--sc-shadow)!important;
+  display:grid!important;grid-template-columns:1fr!important;align-content:center!important;
+  animation:none!important;opacity:1!important;
+}
+body.scrollcraft-v2 .caa-feature::before{
+  content:'🧩';position:absolute!important;right:42px!important;top:50%!important;transform:translateY(-50%) rotate(-8deg)!important;
+  font-size:150px!important;opacity:.075!important;pointer-events:none!important;
+}
+body.scrollcraft-v2 .caa-feature-top{margin-bottom:18px!important}
+body.scrollcraft-v2 .caa-feature-icon{width:62px!important;height:62px!important;border-radius:19px!important;font-size:31px!important}
+body.scrollcraft-v2 .caa-feature-kicker{font-size:9px!important;letter-spacing:2.8px!important}
+body.scrollcraft-v2 .caa-feature-title{font-family:var(--sc-serif)!important;font-size:38px!important}
+body.scrollcraft-v2 .caa-feature-copy{font-size:13px!important;line-height:1.65!important;max-width:760px!important;color:rgba(255,255,255,.76)!important}
+body.scrollcraft-v2 .caa-feature-pills{margin:20px 0!important;gap:8px!important}
+body.scrollcraft-v2 .caa-feature-pills span{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.1)!important;padding:8px 11px!important;font-size:9px!important}
+body.scrollcraft-v2 .caa-feature-btn{
+  width:max-content!important;max-width:100%!important;padding:13px 20px!important;border-radius:999px!important;
+  background:linear-gradient(135deg,#4FB88A,#66D3AA)!important;color:#082C31!important;font-size:9px!important;letter-spacing:.7px!important;
+}
+
+/* Product discovery */
+.sc-products{
+  margin:0 0 30px;padding:38px;border-radius:34px;background:var(--sc-cream);color:var(--sc-ink);
+  box-shadow:var(--sc-soft-shadow);border:1px solid rgba(166,75,42,.12);
+}
+.sc-section-head{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:24px}
+.sc-section-head h2{font:700 clamp(36px,4vw,52px)/.94 var(--sc-serif);letter-spacing:-.025em;max-width:650px}
+.sc-section-head h2 em{color:var(--sc-terracotta);font-style:italic}
+.sc-section-head>a{color:var(--sc-terracotta);text-decoration:none;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.sc-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+body.scrollcraft-v2 .sc-product-card{
+  margin:0!important;width:auto!important;min-height:455px!important;border-radius:22px!important;overflow:hidden!important;
+  background:#fff!important;border:1px solid #E7D6CB!important;box-shadow:0 12px 34px rgba(20,41,59,.08)!important;
+  text-decoration:none!important;transition:transform .25s ease,box-shadow .25s ease!important;
+  animation:none!important;opacity:1!important;display:block!important;
+}
+body.scrollcraft-v2 .sc-product-card:hover{box-shadow:0 20px 48px rgba(20,41,59,.15)!important}
+body.scrollcraft-v2 .amor-feature{grid-template-columns:1fr!important;padding:0!important;color:var(--sc-ink)!important}
+body.scrollcraft-v2 .amor-feature__visual{min-height:230px!important;height:230px!important;width:100%!important;overflow:hidden!important;background:#F4E1D5!important}
+body.scrollcraft-v2 .amor-feature__cover{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 34%!important}
+body.scrollcraft-v2 .amor-feature__content{padding:22px!important;color:var(--sc-ink)!important}
+body.scrollcraft-v2 .amor-feature__eyebrow,body.scrollcraft-v2 .product-feature__eyebrow{color:var(--sc-terracotta)!important}
+body.scrollcraft-v2 .amor-feature__title,body.scrollcraft-v2 .ebook-feature__title,body.scrollcraft-v2 .product-feature__title{font-family:var(--sc-serif)!important;color:var(--sc-ink)!important;font-size:29px!important;line-height:.95!important}
+body.scrollcraft-v2 .amor-feature__copy,body.scrollcraft-v2 .ebook-feature__copy,body.scrollcraft-v2 .product-feature__copy{color:#64717E!important;font-size:10px!important;line-height:1.55!important}
+body.scrollcraft-v2 .amor-feature__price strong,body.scrollcraft-v2 .product-feature__price{color:var(--sc-terracotta)!important;font-family:var(--sc-serif)!important}
+body.scrollcraft-v2 .amor-feature__btn,body.scrollcraft-v2 .ebook-feature__btn,body.scrollcraft-v2 .product-feature__btn{border-radius:999px!important;background:var(--sc-terracotta)!important;color:#fff!important}
+body.scrollcraft-v2 .ebook-feature{padding:0!important;color:var(--sc-ink)!important;display:flex!important;flex-direction:column!important;background:#fff!important}
+body.scrollcraft-v2 .ebook-feature__art{height:245px!important;width:100%!important;object-fit:cover!important;object-position:center!important;order:0!important}
+body.scrollcraft-v2 .ebook-feature__content{padding:22px!important;order:1!important}
+body.scrollcraft-v2 .product-feature{padding:0!important;color:var(--sc-ink)!important;background:#fff!important}
+body.scrollcraft-v2 .product-feature__tag{margin:15px 15px 0!important;color:var(--sc-terracotta)!important}
+body.scrollcraft-v2 .product-feature__content{display:flex!important;flex-direction:column!important;gap:0!important;padding:0 22px 22px!important}
+body.scrollcraft-v2 .product-feature__cover{width:100%!important;height:225px!important;object-fit:contain!important;margin:0 auto 12px!important;padding:8px!important}
+
+/* Emotional pause */
+body.scrollcraft-v2 .sc-mission{
+  margin:0 0 32px!important;border-radius:34px!important;overflow:hidden!important;
+  min-height:300px!important;background:
+    linear-gradient(120deg,rgba(9,39,75,.97),rgba(9,39,75,.78)),
+    radial-gradient(circle at left,rgba(200,134,100,.42),transparent 50%)!important;
+  border:1px solid rgba(232,160,96,.23)!important;box-shadow:var(--sc-shadow)!important;
+  animation:none!important;opacity:1!important;
+}
+body.scrollcraft-v2 .carousel-slide{padding:54px 74px 70px!important;min-height:300px!important;align-items:flex-start!important;text-align:left!important;justify-content:center!important}
+body.scrollcraft-v2 .carousel-emoji{font-size:28px!important;margin-bottom:15px!important}
+body.scrollcraft-v2 .carousel-msg{font-family:var(--sc-serif)!important;font-size:clamp(27px,3vw,40px)!important;line-height:1.04!important;max-width:850px!important;color:var(--sc-cream)!important}
+body.scrollcraft-v2 .carousel-msg .hl{color:var(--sc-gold)!important}
+body.scrollcraft-v2 .carousel-author{font-size:8px!important;letter-spacing:2px!important;color:var(--sc-gold)!important}
+body.scrollcraft-v2 .carousel-cta{border-radius:999px!important;background:linear-gradient(135deg,var(--sc-copper),var(--sc-terracotta))!important;padding:10px 16px!important;font-size:8px!important}
+body.scrollcraft-v2 .carousel-nav{bottom:20px!important}
+
+/* Utility hub */
+body.scrollcraft-v2 .sect-head{margin:34px 0 16px!important}
+body.scrollcraft-v2 .sect-label{font-family:var(--sc-sans)!important;font-size:8px!important;letter-spacing:3.4px!important;color:rgba(255,255,255,.42)!important}
+body.scrollcraft-v2 .sect-line{background:linear-gradient(90deg,transparent,rgba(255,255,255,.12))!important}
+body.scrollcraft-v2 .sc-resource-grid{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:11px!important;
+}
+body.scrollcraft-v2 .sc-resource-card{
+  min-height:126px!important;margin:0!important;padding:18px!important;border-radius:18px!important;
+  background:rgba(255,255,255,.055)!important;border:1px solid rgba(255,255,255,.1)!important;
+  box-shadow:none!important;animation:none!important;opacity:1!important;
+}
+body.scrollcraft-v2 .sc-resource-card:hover{transform:translateY(-4px)!important;border-color:rgba(232,160,96,.48)!important;background:rgba(255,255,255,.08)!important}
+body.scrollcraft-v2 .lnk-icon{width:42px!important;height:42px!important;border-radius:13px!important}
+body.scrollcraft-v2 .lnk-title{font-size:12px!important}
+body.scrollcraft-v2 .lnk-sub{font-size:9px!important;line-height:1.4!important}
+body.scrollcraft-v2 .lnk-badge{font-size:6px!important;letter-spacing:1.2px!important}
+body.scrollcraft-v2 .lnk-arr{width:30px!important;height:30px!important}
+
+body.scrollcraft-v2 .sc-marquee{margin-top:42px!important}
+body.scrollcraft-v2 .marquee-inner span{font-size:8px!important;letter-spacing:3px!important}
+body.scrollcraft-v2 .sc-pills{gap:8px!important}
+body.scrollcraft-v2 .pill{font-size:9px!important;padding:8px 12px!important}
+body.scrollcraft-v2 .sc-footer{padding:26px 0 0!important;margin-top:40px!important;border-top:1px solid rgba(255,255,255,.08)!important}
+body.scrollcraft-v2 .footer-sig{font-family:var(--sc-serif)!important;font-size:22px!important;color:rgba(255,255,255,.65)!important}
+body.scrollcraft-v2 .footer-crp{color:rgba(255,255,255,.28)!important}
+
+/* signature move */
+.sc-living-thread{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.45}
+.sc-living-thread svg{width:100%;height:100%}
+.sc-living-thread path{fill:none;stroke:url(#scThreadGradient);stroke-width:1.4;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1;filter:drop-shadow(0 0 8px rgba(232,160,96,.35))}
+.sc-reveal{opacity:0!important;transform:translateY(26px)!important;transition:opacity .72s ease,transform .72s cubic-bezier(.2,.7,.2,1)!important;transition-delay:var(--sc-delay,0ms)!important}
+.sc-reveal.sc-in{opacity:1!important;transform:none!important}
+body.scrollcraft-v2 .wa-float{width:58px!important;height:58px!important;right:22px!important;bottom:22px!important;box-shadow:0 12px 34px rgba(37,211,102,.4)!important}
+
+@media(max-width:980px){
+  body.scrollcraft-v2 .wrap{width:min(860px,calc(100vw - 30px))!important;padding-top:28px!important}
+  .sc-hero-stage{grid-template-columns:1fr;gap:18px}
+  body.scrollcraft-v2 .hero{grid-template-columns:1.05fr .7fr!important;min-height:540px!important;padding:34px!important}
+  body.scrollcraft-v2 .book-promo{min-height:0!important;aspect-ratio:2/1!important;border-radius:26px!important}
+  .sc-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body.scrollcraft-v2 .sc-product-card:last-child{grid-column:span 2;display:grid!important;grid-template-columns:.8fr 1.2fr!important;min-height:300px!important}
+  body.scrollcraft-v2 .product-feature__content{display:grid!important;grid-template-columns:.8fr 1fr!important;align-items:center!important;padding:18px 28px!important}
+  body.scrollcraft-v2 .product-feature__cover{height:250px!important;margin:0!important}
+  body.scrollcraft-v2 .sc-resource-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+@media(max-width:680px){
+  html{scroll-padding-top:72px!important}
+  body.scrollcraft-v2 .welcome-bar{padding:9px 12px!important}
+  body.scrollcraft-v2 .welcome-bar p{font-size:12px!important;line-height:1.35!important}
+  body.scrollcraft-v2 .wrap{width:calc(100vw - 24px)!important;padding:18px 0 72px!important}
+  .sc-hero-stage{margin-bottom:16px}
+  body.scrollcraft-v2 .hero{
+    grid-template-columns:1fr!important;gap:28px!important;padding:28px 22px 30px!important;min-height:0!important;border-radius:26px!important;
+  }
+  .sc-intro{order:0}
+  .sc-profile{order:1;padding-top:0!important}
+  .sc-intro h1{font-size:clamp(52px,17vw,72px)!important;max-width:100%!important}
+  .sc-intro p{font-size:12px!important;line-height:1.6!important}
+  .sc-actions{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  .sc-btn{font-size:8px;padding:11px 12px}
+  body.scrollcraft-v2 .photo-ring{width:142px!important;height:142px!important}
+  body.scrollcraft-v2 .hero-name{font-size:35px!important}
+  body.scrollcraft-v2 .hero-tagline{font-size:13px!important}
+  body.scrollcraft-v2 .book-promo{aspect-ratio:1.75/1!important;border-radius:24px!important}
+  body.scrollcraft-v2 .caa-feature{padding:27px 20px!important;border-radius:24px!important;min-height:300px!important}
+  body.scrollcraft-v2 .caa-feature::before{font-size:108px!important;right:8px!important;top:30%!important}
+  body.scrollcraft-v2 .caa-feature-title{font-size:34px!important}
+  body.scrollcraft-v2 .caa-feature-copy{font-size:11px!important}
+  body.scrollcraft-v2 .caa-feature-btn{width:100%!important;text-align:center!important}
+  .sc-products{padding:26px 18px 22px;border-radius:26px;margin-bottom:18px;overflow:hidden}
+  .sc-section-head{align-items:flex-start;margin-bottom:18px}
+  .sc-section-head h2{font-size:38px!important}
+  .sc-section-head>a{display:none}
+  .sc-product-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin-right:-18px;padding-right:18px;padding-bottom:8px;scrollbar-width:none}
+  .sc-product-grid::-webkit-scrollbar{display:none}
+  body.scrollcraft-v2 .sc-product-card,
+  body.scrollcraft-v2 .sc-product-card:last-child{flex:0 0 82vw!important;max-width:340px!important;display:block!important;grid-column:auto!important;scroll-snap-align:center;min-height:430px!important}
+  body.scrollcraft-v2 .product-feature__content{display:flex!important;flex-direction:column!important;padding:0 18px 18px!important}
+  body.scrollcraft-v2 .product-feature__cover{height:205px!important;margin:0 auto 10px!important}
+  body.scrollcraft-v2 .carousel-slide{padding:38px 24px 66px!important;min-height:300px!important}
+  body.scrollcraft-v2 .carousel-msg{font-size:29px!important}
+  body.scrollcraft-v2 .sc-resource-grid{grid-template-columns:1fr!important;gap:9px!important}
+  body.scrollcraft-v2 .sc-resource-card{min-height:112px!important;padding:16px!important}
+  body.scrollcraft-v2 .sect-head{margin-top:28px!important}
+  .sc-living-thread{opacity:.23}
+  body.scrollcraft-v2 .wa-float{width:52px!important;height:52px!important;right:14px!important;bottom:14px!important}
+}
+
+@media(max-width:420px){
+  .sc-actions{grid-template-columns:1fr}
+  body.scrollcraft-v2 .book-promo{aspect-ratio:1.55/1!important}
+  .sc-intro h1{font-size:56px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .sc-reveal{opacity:1!important;transform:none!important}
+  .sc-living-thread{display:none!important}
+}
