@@ -1,4 +1,21 @@
 (() => {
+  if (!document.querySelector('link[data-scrollcraft]')) {
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = '/scrollcraft.css';
+    style.dataset.scrollcraft = 'true';
+    document.head.appendChild(style);
+  }
+  if (!document.querySelector('script[data-scrollcraft]')) {
+    const script = document.createElement('script');
+    script.src = '/scrollcraft.js';
+    script.async = false;
+    script.dataset.scrollcraft = 'true';
+    document.head.appendChild(script);
+  }
+})();
+
+(() => {
   const SITE_ID = 'linkhub';
   const CONSENT_KEY = 'ma_analytics_consent_v1';
   const VISITOR_KEY = 'ma_linkhub_visitor_v1';
