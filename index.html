@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#09274B">
+  <link rel="icon" type="image/jpeg" href="/image/perfil.jpg">
   <meta name="description" content="Margareth Almeida — Neuropsicopedagoga. Recursos, materiais e orientação para famílias de crianças neurodivergentes.">
   <meta property="og:title" content="Margareth Almeida — Neuropsicopedagoga">
   <meta property="og:description" content="Ciência, afeto e recursos práticos para apoiar crianças neurodivergentes e suas famílias.">
@@ -11,9 +12,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600;1,700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/scrollcraft.css?v=20260909-7">
+  <link rel="stylesheet" href="/scrollcraft.css?v=20260909-8">
 </head>
 <body>
+  <a class="skip-link" href="#inicio">Pular para o conteúdo</a>
   <div class="progress-rail" aria-hidden="true"><span id="progressLine"></span></div>
   <div class="ambient ambient-a" aria-hidden="true"></div>
   <div class="ambient ambient-b" aria-hidden="true"></div>
@@ -45,7 +47,7 @@
   </header>
 
   <main>
-    <section class="hero section-pad" id="inicio" data-reveal>
+    <section class="hero section-pad" id="inicio" tabindex="-1" data-sc-act="flow">
       <div class="hero-copy">
         <p class="eyebrow">Educação que acolhe · desenvolvimento que transforma</p>
         <h1>Que bom ter <em>você aqui!</em></h1>
@@ -72,10 +74,10 @@
         <p class="mini-label">Neuropsicopedagoga</p>
         <p class="signature">Margareth <em>Almeida</em></p>
         <p class="hero-specialties">Autismo · TDAH · Neurodiversidade</p>
-        <blockquote>“Transformando desafios em conquistas — com ciência e afeto.”</blockquote>
+        <blockquote>“Transformando desafios em conquistas, com ciência e afeto.”</blockquote>
       </div>
 
-      <a class="book-spotlight magnetic" href="https://www.amazon.com.br/Dois-Iguais-Segredo-Cora%C3%A7%C3%A3o-identidade/dp/B0H9GKJN2X/ref=tmm_pap_swatch_0" target="_blank" rel="noopener sponsored" data-depth="0.3" aria-label="Conhecer o livro Os Dois Iguais e o Segredo do Coração na Amazon">
+      <a class="book-spotlight" href="https://www.amazon.com.br/Dois-Iguais-Segredo-Cora%C3%A7%C3%A3o-identidade/dp/B0H9GKJN2X/ref=tmm_pap_swatch_0" target="_blank" rel="noopener sponsored" data-depth="0.3" aria-label="Conhecer o livro Os Dois Iguais e o Segredo do Coração na Amazon">
         <div class="book-copy">
           <span class="pill">Livro em destaque</span>
           <h2>Uma leitura para falar sobre quem somos</h2>
@@ -84,15 +86,15 @@
         </div>
         <div class="book-stage" aria-label="Livro Os Dois Iguais e o Segredo do Coração">
           <span class="book-glow" aria-hidden="true"></span>
-          <div class="hero-book-shell" aria-hidden="true">
-            <img id="heroBookCover" class="hero-book-cover" alt="Capa do livro Os Dois Iguais e o Segredo do Coração" width="217" height="319">
+          <div class="hero-book-shell">
+            <img id="heroBookCover" class="hero-book-cover" src="/image/os-dois-iguais-book.png" alt="Livro Os Dois Iguais e o Segredo do Coração" width="1122" height="1402" fetchpriority="high">
           </div>
         </div>
       </a>
     </section>
 
-    <section class="caa-shell section-pad" id="recursos" data-reveal>
-      <a class="caa-card magnetic" href="https://www.caaneuro.online/" target="_blank" rel="noopener">
+    <section class="caa-shell section-pad" id="recursos" data-sc-act="flow">
+      <a class="caa-card" data-reveal href="https://www.caaneuro.online/" target="_blank" rel="noopener">
         <div class="phone-mock" aria-hidden="true">
           <div class="phone-speaker"></div>
           <div class="phone-screen">
@@ -120,20 +122,19 @@
       </a>
     </section>
 
-    <section class="products section-pad" id="materiais" data-reveal>
+    <section class="products section-pad" id="materiais" data-sc-act="flow">
       <div class="section-heading">
         <div>
-          <p class="eyebrow dark">Produtos e recursos em destaque</p>
           <h2>Conhecimento que apoia, inspira e <em>transforma</em></h2>
         </div>
         <a href="https://apostila-promo.vercel.app/" target="_blank" rel="noopener">Ver todos os materiais →</a>
       </div>
 
       <div class="product-grid">
-        <a class="product-card tilt" href="https://margarethebook.vercel.app/" target="_blank" rel="noopener">
+        <a class="product-card" href="https://margarethebook.vercel.app/" target="_blank" rel="noopener">
           <div class="product-media">
             <div class="product-book-shell">
-              <img src="/image/nao-era-falta-de-amor.webp?v=20260909-7" alt="Capa do livro Não Era Falta de Amor" loading="lazy">
+              <img src="/image/nao-era-falta-de-amor-book.png" alt="Livro Não Era Falta de Amor" width="1122" height="1402" loading="lazy">
             </div>
             <span class="tag">Para pais e cuidadores</span>
           </div>
@@ -144,7 +145,7 @@
           </div>
         </a>
 
-        <a class="product-card tilt" href="https://pequenos-gigantes-ebook.vercel.app/" target="_blank" rel="noopener">
+        <a class="product-card" href="https://pequenos-gigantes-ebook.vercel.app/" target="_blank" rel="noopener">
           <div class="product-media">
             <img src="/image/Pequenos%20Gigantes.png" alt="Capa Pequenos Gigantes" loading="lazy">
             <span class="tag">Atividades práticas</span>
@@ -156,10 +157,10 @@
           </div>
         </a>
 
-        <a class="product-card tilt" href="https://descobrindo-os-cinco-sentidos.vercel.app/" target="_blank" rel="noopener">
+        <a class="product-card" href="https://descobrindo-os-cinco-sentidos.vercel.app/" target="_blank" rel="noopener">
           <div class="product-media">
             <div class="product-book-shell workbook-shell">
-              <img src="https://descobrindo-os-cinco-sentidos.vercel.app/previews/capa.webp" alt="Capa do material Descubra os Sentidos" loading="lazy">
+              <img src="/image/descubra-os-sentidos-book.png" alt="Material Descubra os Sentidos" width="1122" height="1402" loading="lazy">
             </div>
             <span class="tag">Atividades pedagógicas</span>
           </div>
@@ -172,16 +173,19 @@
       </div>
     </section>
 
-    <section class="mission section-pad" data-reveal>
+    <section class="mission section-pad" data-sc-act="flow">
       <div class="mission-art" aria-hidden="true">
-        <div class="heart-line">♡</div>
-        <span class="leaf leaf-one"></span>
-        <span class="leaf leaf-two"></span>
+        <svg class="connection-heart" viewBox="0 0 240 240" fill="none" aria-hidden="true">
+          <path class="connection-trace connection-left" pathLength="1" d="M18 202 C18 155 28 142 48 129 C-8 66 68 12 120 75" />
+          <path class="connection-trace connection-right" pathLength="1" d="M222 202 C222 155 212 142 192 129 C248 66 172 12 120 75" />
+          <path class="connection-trace connection-join" pathLength="1" d="M48 129 Q74 157 120 184 Q166 157 192 129" />
+          <circle cx="120" cy="184" r="5" fill="currentColor" />
+        </svg>
       </div>
       <div class="mission-copy">
         <span class="quote-mark">“</span>
-        <p>Seu filho com autismo <strong>não precisa ser curado</strong> — precisa ser compreendido, amado e ter o suporte certo. E eu estou aqui para isso.</p>
-        <span>— Margareth Almeida</span>
+        <p>Seu filho com autismo <strong>não precisa ser curado</strong>, precisa ser compreendido, amado e ter o suporte certo. E eu estou aqui para isso.</p>
+        <span>Margareth Almeida</span>
       </div>
       <div class="mission-side">
         <p>Infâncias reais.<br><em>Futuros possíveis.</em></p>
@@ -189,10 +193,9 @@
       </div>
     </section>
 
-    <section class="resource-hub section-pad" data-reveal>
+    <section class="resource-hub section-pad" data-sc-act="flow">
       <div class="section-heading light">
         <div>
-          <p class="eyebrow dark">Acesse também</p>
           <h2>Recursos para o seu dia a dia</h2>
         </div>
         <p>Conteúdo de qualidade, sempre ao seu alcance.</p>
@@ -210,7 +213,7 @@
       </div>
     </section>
 
-    <section class="specialties section-pad" id="especialidades" data-reveal>
+    <section class="specialties section-pad" id="especialidades" data-sc-act="flow">
       <div class="specialty-heading">
         <p class="eyebrow">Especialidades</p>
         <h2>Ciência, acolhimento e intervenção com propósito.</h2>
@@ -247,6 +250,6 @@
   <a class="wa-float" href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" target="_blank" rel="noopener" aria-label="Falar com Margareth no WhatsApp">✆</a>
 
   <script src="/analytics.js" defer></script>
-  <script src="/scrollcraft.js?v=20260909-7" defer></script>
+  <script src="/scrollcraft.js?v=20260909-8" defer></script>
 </body>
 </html>
