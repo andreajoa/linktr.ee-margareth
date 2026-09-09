@@ -15,6 +15,40 @@
     const product = document.querySelector('.product-feature');
     const carousel = document.querySelector('.carousel-wrap');
 
+    if (!document.querySelector('.sc-site-header')) {
+      const header = document.createElement('header');
+      header.className = 'sc-site-header';
+      header.innerHTML = `
+        <nav class="sc-nav" aria-label="Navegação principal">
+          <a href="#inicio" class="sc-brand" aria-label="Margareth Almeida — início">
+            <strong>Margareth</strong><em>Almeida</em><small>Neuropsicopedagoga</small>
+          </a>
+          <button class="sc-menu" type="button" aria-expanded="false" aria-controls="scNavLinks" aria-label="Abrir menu">☰</button>
+          <div class="sc-nav-links" id="scNavLinks">
+            <a href="#inicio">Início</a>
+            <a href="#sobre">Sobre mim</a>
+            <a href="#recursos">Recursos</a>
+            <a href="#materiais">Materiais</a>
+            <a href="#acessos">Conteúdos</a>
+          </div>
+          <a class="sc-nav-cta" href="https://api.whatsapp.com/send/?phone=5513978141244&text=Oi%20Margareth%21%20Vim%20pelo%20seu%20perfil%20%E2%9D%A4%EF%B8%8F&type=phone_number&app_absent=0" target="_blank" rel="noopener">◉ Fale comigo</a>
+        </nav>`;
+      const welcome = document.querySelector('.welcome-bar');
+      welcome?.insertAdjacentElement('afterend', header) || document.body.prepend(header);
+      const menuButton = header.querySelector('.sc-menu');
+      const links = header.querySelector('.sc-nav-links');
+      menuButton?.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.textContent = open ? '×' : '☰';
+      });
+      links?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+        links.classList.remove('open');
+        menuButton?.setAttribute('aria-expanded', 'false');
+        if (menuButton) menuButton.textContent = '☰';
+      }));
+    }
+
     if (wrap && hero && !document.querySelector('.sc-hero-stage')) {
       const stage = document.createElement('section');
       stage.className = 'sc-hero-stage sc-reveal';
@@ -85,9 +119,8 @@
     const accessHead = sectionHeads.find(h => /Destaques/i.test(h.textContent || ''));
     if (accessHead) accessHead.id = 'acessos';
 
-    document.querySelectorAll('.links').forEach((el, i) => {
+    document.querySelectorAll('.links').forEach(el => {
       el.classList.add('sc-resource-grid', 'sc-reveal');
-      if (i === 0) el.closest('.sect-head')?.setAttribute('id', 'acessos');
     });
 
     document.querySelectorAll('.lnk').forEach((el, i) => {
