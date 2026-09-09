@@ -10,9 +10,9 @@
     const toggle = document.getElementById('menuToggle');
     const nav = document.getElementById('mainNav');
 
-    /* Homepage visual fixes: keep the logo fully visible and render the real book as a 3D object. */
+    /* Homepage visual fixes: keep the logo fully visible, show complete product covers and render the real book as a 3D object. */
     const fixStyle = document.createElement('style');
-    fixStyle.dataset.homepageFix = '20260909-v2';
+    fixStyle.dataset.homepageFix = '20260909-v3';
     fixStyle.textContent = `
       .site-header{
         min-height:96px!important;
@@ -36,6 +36,35 @@
         margin-top:5px!important;
         line-height:1.35!important;
       }
+
+      /* Keep the complete artwork visible on every product card. */
+      .products .product-media{
+        height:360px!important;
+        display:flex!important;
+        align-items:center!important;
+        justify-content:center!important;
+        padding:18px!important;
+        overflow:hidden!important;
+        background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.98),rgba(248,236,228,.9) 68%,rgba(238,218,205,.8))!important;
+      }
+      .products .product-media img{
+        display:block!important;
+        width:auto!important;
+        height:auto!important;
+        max-width:100%!important;
+        max-height:100%!important;
+        object-fit:contain!important;
+        object-position:center center!important;
+        border-radius:10px!important;
+        box-shadow:0 12px 28px rgba(18,43,67,.14)!important;
+        transform:none!important;
+        transition:transform .35s ease,box-shadow .35s ease!important;
+      }
+      .products .product-card:hover .product-media img{
+        transform:translateY(-3px) scale(1.01)!important;
+        box-shadow:0 17px 34px rgba(18,43,67,.18)!important;
+      }
+      .products .tag{z-index:3!important}
 
       .book-stage{
         perspective:1100px!important;
@@ -143,10 +172,15 @@
         .brand{padding:4px 0!important}
         .brand-name{font-size:27px!important;line-height:1.12!important}
         .brand-role{margin-top:4px!important}
+        .products .product-media{height:330px!important;padding:16px!important}
         .book-stage{min-height:300px!important}
         .book-cover-art.real-cover-mode{width:194px!important;height:285px!important;transform:rotateY(-10deg) rotateX(2deg)!important}
       }
+      @media(max-width:560px){
+        .products .product-media{height:320px!important;padding:14px!important}
+      }
       @media(prefers-reduced-motion:reduce){
+        .products .product-card:hover .product-media img{transform:none!important}
         .book-cover-art.real-cover-mode{animation:none!important;transform:rotateY(-10deg) rotateX(2deg)!important}
       }
     `;
