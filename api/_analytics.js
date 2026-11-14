@@ -101,7 +101,7 @@ async function anonymousToken() {
   if (cached.token && cached.expiresAt > now + 90) return cached.token;
 
   const response = await fetch(`${AUTH_URL}/token/anonymous`, {
-    headers:{ Accept:'application/json', Origin:'https://link-margareth.vercel.app' },
+    headers:{ Accept:'application/json', Origin:'https://link-margareth.nexaclouds.online' },
     signal:AbortSignal.timeout(8000),
     cache:'no-store',
   });

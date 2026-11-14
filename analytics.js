@@ -4,7 +4,7 @@
   const VISITOR_KEY = 'ma_linkhub_visitor_v1';
   const SESSION_KEY = 'ma_linkhub_session_v1';
   const SESSION_TIMEOUT = 30 * 60 * 1000;
-  const OWNED_APOSTILA_HOSTS = new Set(['apostila-promo.vercel.app']);
+  const OWNED_APOSTILA_HOSTS = new Set(['apostila-promo.nexaclouds.online']);
   let started = false;
   let maxScroll = 0;
   let activeSeconds = 0;
